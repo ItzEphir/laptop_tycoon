@@ -9,5 +9,7 @@ class Laptop:
         self.depth = 24
         self.widthScreen = 540
         self.heightScreen = 270
+        self.originalWidthScreen = self.widthScreen
+        self.originalHeightScreen = self.heightScreen
         self.resolutionX = 1366
         self.resolutionY = 768

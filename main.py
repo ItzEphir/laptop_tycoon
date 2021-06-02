@@ -81,6 +81,43 @@ def laptopSpec():
         if ((thisLaptop.width - thisLaptop.originalWidth) // 10) + 1 > 1:
             thisLaptop.price -= 2
             thisLaptop.width -= 10
+    button(x=20, y=120, width=250, height=50, massage=f"Высота: {((thisLaptop.height - thisLaptop.originalHeight) // 10) + 1}", color=0, activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
+    if button(x=160, y=160, width=30, height=40, massage=f">", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
+        if ((thisLaptop.height - thisLaptop.originalHeight) // 10) < levels.maxHeight:
+            thisLaptop.price += 2
+            thisLaptop.height += 10
+    if button(x=20, y=160, width=30, height=40, massage=f"<", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
+        if ((thisLaptop.height - thisLaptop.originalHeight) // 10) + 1 > 1:
+            thisLaptop.price -= 2
+            thisLaptop.height -= 10
+
+    button(x=20, y=220, width=250, height=50, massage=f"Ширина экрана: {((thisLaptop.widthScreen - thisLaptop.originalWidthScreen) // 10) + 1}", color=0, activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
+    if button(x=160, y=260, width=30, height=40, massage=f">", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
+        if ((thisLaptop.widthScreen - thisLaptop.originalWidthScreen) // 10) < levels.maxWidthScreen:
+            thisLaptop.price += 2
+            thisLaptop.widthScreen += 10
+    if button(x=20, y=260, width=30, height=40, massage=f"<", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
+        if ((thisLaptop.widthScreen - thisLaptop.originalWidthScreen) // 10) + 1 > 1:
+            thisLaptop.price -= 2
+            thisLaptop.widthScreen -= 10
+    button(x=20, y=320, width=250, height=50, massage=f"Высота экрана: {((thisLaptop.heightScreen - thisLaptop.originalHeightScreen) // 10) + 1}", color=0, activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
+    if button(x=160, y=360, width=30, height=40, massage=f">", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
+        if ((thisLaptop.heightScreen - thisLaptop.originalHeightScreen) // 10) < levels.maxHeightScreen:
+            thisLaptop.price += 2
+            thisLaptop.heightScreen += 10
+    if button(x=20, y=360, width=30, height=40, massage=f"<", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
+        if ((thisLaptop.heightScreen - thisLaptop.originalHeightScreen) // 10) + 1 > 1:
+            thisLaptop.price -= 2
+            thisLaptop.heightScreen -= 10
 
 
 def play():
