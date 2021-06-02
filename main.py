@@ -3,8 +3,10 @@ from random import randint
 from Peremen import *
 from Engine import *
 from Laptop import *
+from Levels import *
 
 pygame.init()
+levels = Levels()
 
 
 def write(what_write, file):
@@ -59,18 +61,37 @@ def loadingApp():
 
 def laptopSpec():
     display.fill((200, 200, 200))
-    button(x=400 - laptops[len(laptops)].width, y=10, width=250, height=50, massage="", color=0, activeColor=0,
-           colorTitle=0, activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=29)
+    button(x=1000, y=20, width=250, height=50, massage=f"Стоимость: {thisLaptop.price}", color=0, activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
+    pygame.draw.rect(display, (40, 40, 40),
+                     (750 - thisLaptop.width / 2, 300 - thisLaptop.height / 2, thisLaptop.width, thisLaptop.height))
+    pygame.draw.rect(display, (20, 20, 20),
+                     (750 - thisLaptop.widthScreen / 2, 300 - thisLaptop.heightScreen / 2, thisLaptop.widthScreen, thisLaptop.heightScreen))
+    pygame.draw.rect(display, (60, 60, 60),
+                     (750 - thisLaptop.width / 2 * 1.1, 300 + thisLaptop.height / 2, thisLaptop.width * 1.1, thisLaptop.depth))
+    button(x=20, y=20, width=250, height=50, massage=f"Ширина: {((thisLaptop.width - thisLaptop.originalWidth) // 10) + 1}", color=0, activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
+    if button(x=160, y=60, width=30, height=40, massage=f">", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
+        if ((thisLaptop.width - thisLaptop.originalWidth) // 10) < levels.maxWidth:
+            thisLaptop.price += 2
+            thisLaptop.width += 10
+    if button(x=20, y=60, width=30, height=40, massage=f"<", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
+        if ((thisLaptop.width - thisLaptop.originalWidth) // 10) + 1 > 1:
+            thisLaptop.price -= 2
+            thisLaptop.width -= 10
 
 
 def play():
-    global screen
+    global screen, thisLaptop
     display.fill((200, 200, 200))
     button(x=20, y=10, width=250, height=50, massage=f"Денег: {gold}", color=0, activeColor=0,
            colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=29)
     if button(x=130, y=130, width=250, height=50, massage="Новый ноутбук", color=(180, 180, 180), activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=110, hitBoxY=15, fontSize=29):
         laptops.append(Laptop(len(laptops)))
+        thisLaptop = laptops[len(laptops) - 1]
         screen = "Ноутбук хар"
 
 
