@@ -1,0 +1,12 @@
+screen = "ЗагрузкаПрил"
+FPS = 60
+klass = 0
+gift = 0
+boss = "Демон Страж"
+bossHp = 0
+bossDamage = 0
+flask = 0
+flaskPower = 75
+points = 0
+hero = 0
+game_end = False
