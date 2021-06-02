@@ -7,7 +7,7 @@ HEIGHT = 720
 halfWidth = WIDTH // 2
 halfHeight = WIDTH // 2
 
-f = open("Настройки.txt", "r")
+f = open("files/Настройки.txt", "r")
 sohra_zagruzil = f.read()
 newsohra_zagruzil = sohra_zagruzil.split("/")
 fullScreen = newsohra_zagruzil[0]

@@ -2,6 +2,7 @@ import pygame
 from random import randint
 from Peremen import *
 from Engine import *
+from Laptop import *
 
 pygame.init()
 
@@ -51,6 +52,38 @@ def loadingImg(imgFile, width, height):
     return img
 
 
+def loadingApp():
+    global screen
+    screen = "Меню"
+
+
+def laptopSpec():
+    display.fill((200, 200, 200))
+    button(x=400 - laptops[len(laptops)].width, y=10, width=250, height=50, massage="", color=0, activeColor=0,
+           colorTitle=0, activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=29)
+
+
+def play():
+    global screen
+    display.fill((200, 200, 200))
+    button(x=20, y=10, width=250, height=50, massage=f"Денег: {gold}", color=0, activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=29)
+    if button(x=130, y=130, width=250, height=50, massage="Новый ноутбук", color=(180, 180, 180), activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=110, hitBoxY=15, fontSize=29):
+        laptops.append(Laptop(len(laptops)))
+        screen = "Ноутбук хар"
+
+
+def menu():
+    global screen
+    if button(x=250, y=400, width=250, height=250, massage="Продолжить", color=(10, 10, 10), activeColor=0,
+              colorTitle=(220, 220, 220), activeColorTitle=(220, 220, 220), hitBoxX=95, hitBoxY=110, fontSize=30):
+        pass
+    if button(x=550, y=400, width=250, height=250, massage="Новая Игра", color=(10, 10, 10), activeColor=0,
+              colorTitle=(220, 220, 220), activeColorTitle=(220, 220, 220), hitBoxX=95, hitBoxY=110, fontSize=30):
+        screen = "Игра"
+
+
 def game():
     global game_end, display, keys
     game_end = False
@@ -65,8 +98,13 @@ def game():
         display.fill((0, 0, 0))
 
         if screen == "Меню":
-            pass
-            #menu()
+            menu()
+        elif screen == "ЗагрузкаПриложения":
+            loadingApp()
+        elif screen == "Игра":
+            play()
+        elif screen == "Ноутбук хар":
+            laptopSpec()
 
         print_text(str(int(clock.get_fps())), 10, 10, (120, 120, 120), 20)
 
