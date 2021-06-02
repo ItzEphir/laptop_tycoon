@@ -120,6 +120,10 @@ def laptopSpec():
             thisLaptop.heightScreen -= 10
 
 
+def processorSpec():
+    pass
+
+
 def play():
     global screen, thisLaptop
     display.fill((200, 200, 200))
@@ -130,6 +134,9 @@ def play():
         laptops.append(Laptop(len(laptops)))
         thisLaptop = laptops[len(laptops) - 1]
         screen = "Ноутбук хар"
+    if button(x=130, y=130, width=250, height=50, massage="Новый процессор", color=(180, 180, 180), activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=110, hitBoxY=15, fontSize=29):
+        screen = "Процессор хар"
 
 
 def menu():
@@ -162,6 +169,8 @@ def game():
         elif screen == "Игра":
             play()
         elif screen == "Ноутбук хар":
+            laptopSpec()
+        elif screen == "Процессор хар":
             laptopSpec()
 
         print_text(str(int(clock.get_fps())), 10, 10, (120, 120, 120), 20)
