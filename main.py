@@ -4,6 +4,8 @@ from Peremen import *
 from Engine import *
 from Laptop import *
 from Levels import *
+from PhotoEtit import *
+from PIL import Image, ImageDraw
 
 pygame.init()
 levels = Levels()
@@ -60,11 +62,27 @@ def loadingApp():
 
 
 def loadingLaptopSpec():
-    global thisLaptop, screen, screenLaptop, landscapeImg
+    global thisLaptop, screen, screenLaptop, landscapeImg, landscapeImgEdit, newLandscapeImg
     landscapeImg = loadingImg("img/Пейзаж.jpg", 1, 1)
     laptops.append(Laptop(len(laptops)))
     thisLaptop = laptops[len(laptops) - 1]
     screenLaptop = 1
+    landscapeImg = pygame.transform.scale(landscapeImg,
+                                          (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
+    landscapeImgEdit = Photo("img/Пейзаж.jpg")
+    for i in range(landscapeImgEdit.width):
+        for j in range(landscapeImgEdit.height):
+            r = landscapeImgEdit.pix[i, j][0]
+            g = landscapeImgEdit.pix[i, j][1]
+            b = landscapeImgEdit.pix[i, j][2]
+            r = r // 1.2
+            g = g // 1.2
+            b = b // 1.2
+            landscapeImgEdit.draw.point((i, j), (int(r), int(g), int(b)))
+    landscapeImgEdit.image.save("Новый пейзаж.jpg", "JPEG")
+    newLandscapeImg = loadingImg("Новый пейзаж.jpg", 1, 1)
+    newLandscapeImg = pygame.transform.scale(newLandscapeImg,
+                                             (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
 
 
 def laptopSpec1():
@@ -170,11 +188,73 @@ def laptopSpec2():
 
 
 def laptopSpec3():
-    display.blit(landscapeImg, (750 - thisLaptop.widthScreen / 2, 300 - thisLaptop.heightScreen / 2))
+    global newLandscapeImg, landscapeImgEdit
+    display.blit(newLandscapeImg, (750 - thisLaptop.widthScreen / 2, 300 - thisLaptop.heightScreen / 2))
+    button(x=40, y=30, width=250, height=50,
+           massage=f"Матрица:", color=(180, 180, 180), activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=70, hitBoxY=15, fontSize=30)
+    if button(x=40, y=100, width=250, height=50,
+              massage=f"TN", color=(180, 180, 180), activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=15, hitBoxY=15, fontSize=30):
+        landscapeImgEdit = Photo("img/Пейзаж.jpg")
+        for i in range(landscapeImgEdit.width):
+            for j in range(landscapeImgEdit.height):
+                r = landscapeImgEdit.pix[i, j][0]
+                g = landscapeImgEdit.pix[i, j][1]
+                b = landscapeImgEdit.pix[i, j][2]
+                r = r // 1.2
+                g = g // 1.2
+                b = b // 1.2
+                landscapeImgEdit.draw.point((i, j), (int(r), int(g), int(b)))
+        landscapeImgEdit.image.save("Новый пейзаж.jpg", "JPEG")
+        newLandscapeImg = loadingImg("Новый пейзаж.jpg", 1, 1)
+        newLandscapeImg = pygame.transform.scale(newLandscapeImg,
+                                                 (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
+        if thisLaptop.screenTech == "VA":
+            thisLaptop.price -= 10
+        elif thisLaptop.screenTech == "IPS":
+            thisLaptop.price -= 20
+        thisLaptop.screenTech = "TN"
+    if button(x=40, y=160, width=250, height=50,
+              massage=f"VA", color=(180, 180, 180), activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=15, hitBoxY=15, fontSize=30):
+        landscapeImgEdit = Photo("img/Пейзаж.jpg")
+        for i in range(landscapeImgEdit.width):
+            for j in range(landscapeImgEdit.height):
+                r = landscapeImgEdit.pix[i, j][0]
+                g = landscapeImgEdit.pix[i, j][1]
+                b = landscapeImgEdit.pix[i, j][2]
+                r /= 1.1
+                g /= 1.1
+                b /= 1.1
+                landscapeImgEdit.draw.point((i, j), (int(r), int(g), int(b)))
+        landscapeImgEdit.image.save("Новый пейзаж.jpg", "JPEG")
+        newLandscapeImg = loadingImg("Новый пейзаж.jpg", 1, 1)
+        newLandscapeImg = pygame.transform.scale(newLandscapeImg,
+                                                 (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
+        thisLaptop.screenTech = "VA"
+    if button(x=40, y=220, width=250, height=50,
+              massage=f"IPS", color=(180, 180, 180), activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=15, hitBoxY=15, fontSize=30):
+        landscapeImgEdit = Photo("img/Пейзаж.jpg")
+        for i in range(landscapeImgEdit.width):
+            for j in range(landscapeImgEdit.height):
+                r = landscapeImgEdit.pix[i, j][0]
+                g = landscapeImgEdit.pix[i, j][1]
+                b = landscapeImgEdit.pix[i, j][2]
+                r *= 1
+                g *= 1
+                b *= 1
+                landscapeImgEdit.draw.point((i, j), (int(r), int(g), int(b)))
+        landscapeImgEdit.image.save("Новый пейзаж.jpg", "JPEG")
+        newLandscapeImg = loadingImg("Новый пейзаж.jpg", 1, 1)
+        newLandscapeImg = pygame.transform.scale(newLandscapeImg,
+                                                 (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
+        thisLaptop.screenTech = "IPS"
 
 
 def laptopSpecGeneral():
-    global screenLaptop, landscapeImg
+    global screenLaptop, landscapeImg, landscapeImgEdit, newLandscapeImg, screen
     display.fill((200, 200, 200))
     button(x=1000, y=20, width=250, height=50, massage=f"Стоимость: {thisLaptop.price}", color=0, activeColor=0,
            colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
@@ -189,13 +269,12 @@ def laptopSpecGeneral():
     if button(x=1050, y=650, width=150, height=50, massage=f"Вперед", color=0, activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
         screenLaptop += 1
-        if screenLaptop == 3:
-            landscapeImg = pygame.transform.scale(landscapeImg,
-                                                  (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
     if button(x=100, y=650, width=150, height=50, massage=f"Назад", color=0, activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
         if screenLaptop > 1:
             screenLaptop -= 1
+        else:
+            screen = "Игра"
     if screenLaptop == 1:
         laptopSpec1()
     elif screenLaptop == 2:

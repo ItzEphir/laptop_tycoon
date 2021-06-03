@@ -15,3 +15,4 @@ class Laptop:
         self.resolutionY = 768
         self.color = (40, 40, 40)
         self.colorNumber = 7
+        self.screenTech = "TN"
