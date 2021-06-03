@@ -286,7 +286,7 @@ def laptopSpecGeneral():
 
 # Дима здесь
 def processorSpec(typeproc="Intel", modelproc=1):
-    global screen, escapePressed
+    global screen, escapePressed, processors
 
     # Фон
     display.fill((0, 0, 194))
@@ -303,18 +303,10 @@ def processorSpec(typeproc="Intel", modelproc=1):
     elif modelproc == 3:
         processor = processors[3]
 
-    pygame.draw.rect(display, (197, 201, 199), (1230 - processor.get("width"), processor.get("height") + 25,
-                                                processor.get("width"), processor.get("height")))
-
-    pygame.draw.rect(display, (177, 181, 179), (1230 - processor.get("width") + processor.get("miniwidth") // 2, processor.get("height") + 25 + processor.get("miniheight") // 2,
-                                                processor.get("miniwidth"), processor.get("miniheight")))
-
-    print_text(processor.get("type"),
-               1230 - processor.get("width") + processor.get("miniwidth") - processor.get("miniwidth") // 4,
-               processor.get("height") + 25 + processor.get("miniheight") // 2,
-               (0, 0, 0), int(processor.get("miniwidth") * 0.2636) - 1)
+    processor.set()
 
     checkEscape("Меню")
+
 
 # И здесь тоже Дима
 def checkEscape(where):

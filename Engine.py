@@ -23,7 +23,7 @@ pygame.display.set_caption("Гонка")
 clock = pygame.time.Clock()
 
 
-def button(x=100, y=100, width=150, height=50, massage="Кнопка", color=0, activeColor=0, colorTitle=(0, 0, 0), activeColorTitle=0, hitBoxX=50, hitBoxY=10, fontSize=20):
+def button(x=100, y=100, width=150, height=50, massage="Кнопка", color=0, activeColor=0, colorTitle=(0, 0, 0), activeColorTitle=0, hitBoxX=50, hitBoxY=10, fontSize=20, font="Courier New"):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
     if color != 0:
