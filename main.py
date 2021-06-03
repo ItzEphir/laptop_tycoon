@@ -59,17 +59,16 @@ def loadingApp():
     screen = "Меню"
 
 
-def laptopSpec():
-    display.fill((200, 200, 200))
-    button(x=1000, y=20, width=250, height=50, massage=f"Стоимость: {thisLaptop.price}", color=0, activeColor=0,
-           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
-    pygame.draw.rect(display, (40, 40, 40),
-                     (750 - thisLaptop.width / 2, 300 - thisLaptop.height / 2, thisLaptop.width, thisLaptop.height))
-    pygame.draw.rect(display, (20, 20, 20),
-                     (750 - thisLaptop.widthScreen / 2, 300 - thisLaptop.heightScreen / 2, thisLaptop.widthScreen, thisLaptop.heightScreen))
-    pygame.draw.rect(display, (60, 60, 60),
-                     (750 - thisLaptop.width / 2 * 1.1, 300 + thisLaptop.height / 2, thisLaptop.width * 1.1, thisLaptop.depth))
-    button(x=20, y=20, width=250, height=50, massage=f"Ширина: {((thisLaptop.width - thisLaptop.originalWidth) // 10) + 1}", color=0, activeColor=0,
+def loadingLaptopSpec():
+    global thisLaptop, screen, screenLaptop
+    laptops.append(Laptop(len(laptops)))
+    thisLaptop = laptops[len(laptops) - 1]
+    screenLaptop = 1
+
+
+def laptopSpec1():
+    button(x=20, y=20, width=250, height=50,
+           massage=f"Ширина: {((thisLaptop.width - thisLaptop.originalWidth) // 10) + 1}", color=0, activeColor=0,
            colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
     if button(x=160, y=60, width=30, height=40, massage=f">", color=0, activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
@@ -81,7 +80,8 @@ def laptopSpec():
         if ((thisLaptop.width - thisLaptop.originalWidth) // 10) + 1 > 1:
             thisLaptop.price -= 2
             thisLaptop.width -= 10
-    button(x=20, y=120, width=250, height=50, massage=f"Высота: {((thisLaptop.height - thisLaptop.originalHeight) // 10) + 1}", color=0, activeColor=0,
+    button(x=20, y=120, width=250, height=50,
+           massage=f"Высота: {((thisLaptop.height - thisLaptop.originalHeight) // 10) + 1}", color=0, activeColor=0,
            colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
     if button(x=160, y=160, width=30, height=40, massage=f">", color=0, activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
@@ -94,7 +94,9 @@ def laptopSpec():
             thisLaptop.price -= 2
             thisLaptop.height -= 10
 
-    button(x=20, y=220, width=250, height=50, massage=f"Ширина экрана: {((thisLaptop.widthScreen - thisLaptop.originalWidthScreen) // 10) + 1}", color=0, activeColor=0,
+    button(x=20, y=220, width=250, height=50,
+           massage=f"Ширина экрана: {((thisLaptop.widthScreen - thisLaptop.originalWidthScreen) // 10) + 1}", color=0,
+           activeColor=0,
            colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
     if button(x=160, y=260, width=30, height=40, massage=f">", color=0, activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
@@ -106,7 +108,9 @@ def laptopSpec():
         if ((thisLaptop.widthScreen - thisLaptop.originalWidthScreen) // 10) + 1 > 1:
             thisLaptop.price -= 2
             thisLaptop.widthScreen -= 10
-    button(x=20, y=320, width=250, height=50, massage=f"Высота экрана: {((thisLaptop.heightScreen - thisLaptop.originalHeightScreen) // 10) + 1}", color=0, activeColor=0,
+    button(x=20, y=320, width=250, height=50,
+           massage=f"Высота экрана: {((thisLaptop.heightScreen - thisLaptop.originalHeightScreen) // 10) + 1}", color=0,
+           activeColor=0,
            colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
     if button(x=160, y=360, width=30, height=40, massage=f">", color=0, activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=10, hitBoxY=15, fontSize=30):
@@ -120,22 +124,89 @@ def laptopSpec():
             thisLaptop.heightScreen -= 10
 
 
+def laptopSpec2():
+    button(x=20, y=50, width=250, height=50,
+           massage=f"Цвет: ", color=0, activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
+    if button(x=20, y=120, width=30, height=30,
+              massage="", color=(200, 0, 0), activeColor=0,
+              colorTitle=0, activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30):
+        thisLaptop.color = (200, 0, 0)
+        thisLaptop.colorNumber = 1
+    if button(x=70, y=120, width=30, height=30,
+              massage="", color=(250, 160, 0), activeColor=0,
+              colorTitle=0, activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30):
+        thisLaptop.color = (250, 80, 0)
+        thisLaptop.colorNumber = 2
+    if button(x=120, y=120, width=30, height=30,
+              massage="", color=(220, 220, 0), activeColor=0,
+              colorTitle=0, activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30):
+        thisLaptop.color = (220, 220, 0)
+        thisLaptop.colorNumber = 3
+    if button(x=170, y=120, width=30, height=30,
+              massage="", color=(0, 200, 0), activeColor=0,
+              colorTitle=0, activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30):
+        thisLaptop.color = (0, 200, 0)
+        thisLaptop.colorNumber = 4
+    if button(x=220, y=120, width=30, height=30,
+              massage="", color=(60, 160, 240), activeColor=0,
+              colorTitle=0, activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30):
+        thisLaptop.color = (60, 160, 240)
+        thisLaptop.colorNumber = 5
+    if button(x=270, y=120, width=30, height=30,
+              massage="", color=(0, 0, 200), activeColor=0,
+              colorTitle=0, activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30):
+        thisLaptop.color = (0, 0, 200)
+        thisLaptop.colorNumber = 6
+    if button(x=320, y=120, width=30, height=30,
+              massage="", color=(0, 0, 0), activeColor=0,
+              colorTitle=0, activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30):
+        thisLaptop.color = (40, 40, 40)
+        thisLaptop.colorNumber = 7
+    button(x=20 + (thisLaptop.colorNumber - 1) * 50, y=150, width=250, height=50,
+           massage=f"^", color=0, activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
+
+
+def laptopSpecGeneral():
+    global screenLaptop
+    display.fill((200, 200, 200))
+    button(x=1000, y=20, width=250, height=50, massage=f"Стоимость: {thisLaptop.price}", color=0, activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
+    pygame.draw.rect(display, (thisLaptop.color),
+                     (750 - thisLaptop.width / 2, 300 - thisLaptop.height / 2, thisLaptop.width, thisLaptop.height))
+    pygame.draw.rect(display, (20, 20, 20),
+                     (750 - thisLaptop.widthScreen / 2, 300 - thisLaptop.heightScreen / 2, thisLaptop.widthScreen, thisLaptop.heightScreen))
+    pygame.draw.rect(display, (60, 60, 60),
+                     (750 - thisLaptop.width / 2 * 1.1, 300 + thisLaptop.height / 2, thisLaptop.width * 1.1, thisLaptop.depth))
+    if button(x=1050, y=650, width=150, height=50, massage=f"Вперед", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
+        screenLaptop += 1
+    if button(x=100, y=650, width=150, height=50, massage=f"Назад", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
+        if screenLaptop > 1:
+            screenLaptop -= 1
+    if screenLaptop == 1:
+        laptopSpec1()
+    elif screenLaptop == 2:
+        laptopSpec2()
+
+
 def processorSpec():
     pass
 
 
 def play():
-    global screen, thisLaptop
+    global screen
     display.fill((200, 200, 200))
     button(x=20, y=10, width=250, height=50, massage=f"Денег: {gold}", color=0, activeColor=0,
            colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=29)
-    if button(x=130, y=130, width=250, height=50, massage="Новый ноутбук", color=(180, 180, 180), activeColor=0,
+    if button(x=130, y=130, width=270, height=50, massage="Новый ноутбук", color=(180, 180, 180), activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=110, hitBoxY=15, fontSize=29):
-        laptops.append(Laptop(len(laptops)))
-        thisLaptop = laptops[len(laptops) - 1]
+        loadingLaptopSpec()
         screen = "Ноутбук хар"
-    if button(x=130, y=130, width=250, height=50, massage="Новый процессор", color=(180, 180, 180), activeColor=0,
-              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=110, hitBoxY=15, fontSize=29):
+    if button(x=130, y=230, width=270, height=50, massage="Новый процессор", color=(180, 180, 180), activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=125, hitBoxY=15, fontSize=29):
         screen = "Процессор хар"
 
 
@@ -169,9 +240,9 @@ def game():
         elif screen == "Игра":
             play()
         elif screen == "Ноутбук хар":
-            laptopSpec()
+            laptopSpecGeneral()
         elif screen == "Процессор хар":
-            laptopSpec()
+            processorSpec()
 
         print_text(str(int(clock.get_fps())), 10, 10, (120, 120, 120), 20)
 
