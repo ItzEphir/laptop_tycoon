@@ -2,6 +2,7 @@ class Laptop:
     def __init__(self, name):
         self.name = name
         self.price = 50
+        self.salePrice = int(self.price * 1.3)
         self.width = 600
         self.height = 300
         self.originalWidth = self.width

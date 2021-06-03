@@ -8,3 +8,7 @@ keys = 0
 landscapeImg = 0
 landscapeImgEdit = 0
 newLandscapeImg = 0
+screenSeeLaptop = 0
+
+escapePressed = False
+processors = []

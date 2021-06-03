@@ -5,10 +5,15 @@ from Engine import *
 from Laptop import *
 from Levels import *
 from PhotoEtit import *
-from PIL import Image, ImageDraw
+from Processor import *
 
 pygame.init()
 levels = Levels()
+
+# Шаблон
+# button(x=100, y=650, width=150, height=50,
+#        massage=f"Назад", color=0, activeColor=0, colorTitle=(10, 10, 10),
+#        activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30, font="Courier New", delay=120)
 
 
 def write(what_write, file):
@@ -64,8 +69,7 @@ def loadingApp():
 def loadingLaptopSpec():
     global thisLaptop, screen, screenLaptop, landscapeImg, landscapeImgEdit, newLandscapeImg
     landscapeImg = loadingImg("img/Пейзаж.jpg", 1, 1)
-    laptops.append(Laptop(len(laptops)))
-    thisLaptop = laptops[len(laptops) - 1]
+    thisLaptop = Laptop(len(laptops))
     screenLaptop = 1
     landscapeImg = pygame.transform.scale(landscapeImg,
                                           (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
@@ -83,6 +87,12 @@ def loadingLaptopSpec():
     newLandscapeImg = loadingImg("Новый пейзаж.jpg", 1, 1)
     newLandscapeImg = pygame.transform.scale(newLandscapeImg,
                                              (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
+
+
+def loadingSeeLaptops():
+    global screenSeeLaptop, thisLaptop
+    screenSeeLaptop = 1
+    thisLaptop = laptops[0]
 
 
 def laptopSpec1():
@@ -193,8 +203,7 @@ def laptopSpec3():
     button(x=40, y=30, width=250, height=50,
            massage=f"Матрица:", color=(180, 180, 180), activeColor=0,
            colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=70, hitBoxY=15, fontSize=30)
-    if button(x=40, y=100, width=250, height=50,
-              massage=f"TN", color=(180, 180, 180), activeColor=0,
+    if button(x=40, y=100, width=250, height=50, massage=f"TN", color=(180, 180, 180), activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=15, hitBoxY=15, fontSize=30):
         landscapeImgEdit = Photo("img/Пейзаж.jpg")
         for i in range(landscapeImgEdit.width):
@@ -214,10 +223,35 @@ def laptopSpec3():
             thisLaptop.price -= 10
         elif thisLaptop.screenTech == "IPS":
             thisLaptop.price -= 20
+        elif thisLaptop.screenTech == "OLED":
+            thisLaptop.price -= 30
         thisLaptop.screenTech = "TN"
-    if button(x=40, y=160, width=250, height=50,
-              massage=f"VA", color=(180, 180, 180), activeColor=0,
-              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=15, hitBoxY=15, fontSize=30):
+    elif button(x=40, y=160, width=250, height=50, massage=f"VA", color=(180, 180, 180), activeColor=0,
+                colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=15, hitBoxY=15, fontSize=30):
+        landscapeImgEdit = Photo("img/Пейзаж.jpg")
+        for i in range(landscapeImgEdit.width):
+            for j in range(landscapeImgEdit.height):
+                r = landscapeImgEdit.pix[i, j][0]
+                g = landscapeImgEdit.pix[i, j][1]
+                b = landscapeImgEdit.pix[i, j][2]
+                r /= 1.15
+                g /= 1.15
+                b /= 1.15
+                landscapeImgEdit.draw.point((i, j), (int(r), int(g), int(b)))
+        landscapeImgEdit.image.save("Новый пейзаж.jpg", "JPEG")
+        newLandscapeImg = loadingImg("Новый пейзаж.jpg", 1, 1)
+        newLandscapeImg = pygame.transform.scale(newLandscapeImg,
+                                                 (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
+        if thisLaptop.screenTech == "TN":
+            thisLaptop.price += 10
+        elif thisLaptop.screenTech == "IPS":
+            thisLaptop.price -= 10
+        elif thisLaptop.screenTech == "OLED":
+            thisLaptop.price -= 20
+        thisLaptop.screenTech = "VA"
+    elif button(x=40, y=220, width=250, height=50,
+                massage=f"IPS", color=(180, 180, 180), activeColor=0,
+                colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=15, hitBoxY=15, fontSize=30):
         landscapeImgEdit = Photo("img/Пейзаж.jpg")
         for i in range(landscapeImgEdit.width):
             for j in range(landscapeImgEdit.height):
@@ -232,10 +266,16 @@ def laptopSpec3():
         newLandscapeImg = loadingImg("Новый пейзаж.jpg", 1, 1)
         newLandscapeImg = pygame.transform.scale(newLandscapeImg,
                                                  (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
-        thisLaptop.screenTech = "VA"
-    if button(x=40, y=220, width=250, height=50,
-              massage=f"IPS", color=(180, 180, 180), activeColor=0,
-              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=15, hitBoxY=15, fontSize=30):
+        if thisLaptop.screenTech == "TN":
+            thisLaptop.price += 20
+        elif thisLaptop.screenTech == "VA":
+            thisLaptop.price += 10
+        elif thisLaptop.screenTech == "OLED":
+            thisLaptop.price -= 10
+        thisLaptop.screenTech = "IPS"
+    elif button(x=40, y=280, width=250, height=50,
+                massage=f"OLED", color=(180, 180, 180), activeColor=0,
+                colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=20, hitBoxY=15, fontSize=30):
         landscapeImgEdit = Photo("img/Пейзаж.jpg")
         for i in range(landscapeImgEdit.width):
             for j in range(landscapeImgEdit.height):
@@ -250,7 +290,30 @@ def laptopSpec3():
         newLandscapeImg = loadingImg("Новый пейзаж.jpg", 1, 1)
         newLandscapeImg = pygame.transform.scale(newLandscapeImg,
                                                  (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
-        thisLaptop.screenTech = "IPS"
+        if thisLaptop.screenTech == "TN":
+            thisLaptop.price += 30
+        elif thisLaptop.screenTech == "VA":
+            thisLaptop.price += 20
+        elif thisLaptop.screenTech == "IPS":
+            thisLaptop.price += 10
+        thisLaptop.screenTech = "OLED"
+
+
+def laptopSpecPrice():
+    button(x=40, y=30, width=250, height=50,
+           massage=f"Цена:", color=(180, 180, 180), activeColor=0,
+           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=55, hitBoxY=15, fontSize=30)
+    button(x=120, y=100, width=100, height=50,
+           massage=str(int(thisLaptop.salePrice)), color=(180, 180, 180), activeColor=0, colorTitle=(10, 10, 10),
+           activeColorTitle=0, hitBoxX=30, hitBoxY=15, fontSize=27)
+    if button(x=50, y=100, width=50, height=50,
+              massage=f"<", color=(180, 180, 180), activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=13, hitBoxY=15, fontSize=30, font="Courier New", delay=11):
+        thisLaptop.salePrice -= 1
+    if button(x=240, y=100, width=50, height=50,
+              massage=f">", color=(180, 180, 180), activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=10, hitBoxY=13, fontSize=30, font="Courier New", delay=11):
+        thisLaptop.salePrice += 1
 
 
 def laptopSpecGeneral():
@@ -266,9 +329,21 @@ def laptopSpecGeneral():
     pygame.draw.rect(display, (60, 60, 60),
                      (750 - thisLaptop.width / 2 * 1.1, 300 + thisLaptop.height / 2, thisLaptop.width * 1.1,
                       thisLaptop.depth))
-    if button(x=1050, y=650, width=150, height=50, massage=f"Вперед", color=0, activeColor=0,
-              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
-        screenLaptop += 1
+    if screenLaptop != 4:
+        if button(x=1050, y=650, width=150, height=50, massage=f"Вперед", color=0, activeColor=0,
+                  colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
+            if screenLaptop == 3:
+                thisLaptop.salePrice = int(thisLaptop.price * 1.3)
+            elif screenLaptop == 2:
+                newLandscapeImg = pygame.transform.scale(newLandscapeImg,
+                                                         (thisLaptop.widthScreen,
+                                                          thisLaptop.heightScreen)).convert_alpha()
+            screenLaptop += 1
+    else:
+        if button(x=1050, y=650, width=150, height=50, massage=f"Разработать", color=0, activeColor=0,
+                  colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
+            laptops.append(thisLaptop)
+            screen = "Игра"
     if button(x=100, y=650, width=150, height=50, massage=f"Назад", color=0, activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
         if screenLaptop > 1:
@@ -281,11 +356,88 @@ def laptopSpecGeneral():
         laptopSpec2()
     elif screenLaptop == 3:
         laptopSpec3()
+    elif screenLaptop == 4:
+        laptopSpecPrice()
 
 
 # Дима здесь
-def processorSpec():
-    pass
+def processorSpec(typeproc="Intel", modelproc=1):
+    global screen, escapePressed, processors
+
+    # Фон
+    display.fill((0, 0, 194))
+
+    if typeproc == "Intel":
+        processors = [Processor(100, 100, 1, "Intel"), Processor(100, 105, 2, "Intel"), Processor(100, 110, 3, "Intel")]
+    elif typeproc == "AMD":
+        processors = [Processor(100, 75, 1, "AMD"), Processor(150, 85, 2, "AMD"), Processor(150, 90, 3, "AMD")]
+
+    if modelproc == 1:
+        processor = processors[1]
+    elif modelproc == 2:
+        processor = processors[2]
+    elif modelproc == 3:
+        processor = processors[3]
+
+    processor.set()
+
+    checkEscape("Игра")
+
+
+# И здесь тоже Дима
+def checkEscape(where):
+    global escapePressed, screen
+    # Выход нажатием клавиши escape
+    if keys[pygame.K_ESCAPE]:
+        # Проверка на долговременное нажатие (если убрать - баги)
+        if not escapePressed:
+            escapePressed = True
+            pygame.time.delay(120)
+    else:
+        # Продолжение проверки на долговременное нажатие
+        if escapePressed:
+            screen = where
+            escapePressed = False
+
+
+def seeLaptops():
+    global screen, thisLaptop, screenSeeLaptop
+    display.fill((200, 200, 200))
+    pygame.draw.rect(display, thisLaptop.color,
+                     (800 - thisLaptop.width / 2, 300 - thisLaptop.height / 2, thisLaptop.width, thisLaptop.height))
+    pygame.draw.rect(display, (20, 20, 20),
+                     (800 - thisLaptop.widthScreen / 2, 300 - thisLaptop.heightScreen / 2, thisLaptop.widthScreen,
+                      thisLaptop.heightScreen))
+    pygame.draw.rect(display, (60, 60, 60),
+                     (800 - thisLaptop.width / 2 * 1.1, 300 + thisLaptop.height / 2, thisLaptop.width * 1.1,
+                      thisLaptop.depth))
+    if button(x=1050, y=650, width=150, height=50, massage=f"Вперед", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
+        if screenSeeLaptop < len(laptops):
+            screenSeeLaptop += 1
+            thisLaptop = laptops[screenSeeLaptop - 1]
+    if button(x=100, y=650, width=150, height=50,
+              massage=f"Назад", color=0, activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30, font="Courier New", delay=120):
+        if screenSeeLaptop > 1:
+            screenSeeLaptop -= 1
+            thisLaptop = laptops[screenSeeLaptop - 1]
+    if button(x=1200, y=10, width=50, height=50,
+              massage=f"X", color=(180, 180, 180), activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
+        screen = "Игра"
+    button(x=500, y=30, width=150, height=50,
+           massage=f"Название: {thisLaptop.name}", color=0, activeColor=0, colorTitle=(10, 10, 10),
+           activeColorTitle=0, hitBoxX=55, hitBoxY=20, fontSize=35, font="Courier New", delay=120)
+    button(x=40, y=30, width=150, height=50,
+           massage=f"Цена: {thisLaptop.salePrice}", color=0, activeColor=0, colorTitle=(10, 10, 10),
+           activeColorTitle=0, hitBoxX=55, hitBoxY=15, fontSize=30, font="Courier New", delay=120)
+    button(x=40, y=90, width=150, height=50,
+           massage=f"Матрица: {thisLaptop.screenTech}", color=0, activeColor=0, colorTitle=(10, 10, 10),
+           activeColorTitle=0, hitBoxX=55, hitBoxY=15, fontSize=30, font="Courier New", delay=120)
+    button(x=40, y=150, width=150, height=50,
+           massage=f"Разрешение: {thisLaptop.resolutionX} X {thisLaptop.resolutionY}", color=0, activeColor=0, colorTitle=(10, 10, 10),
+           activeColorTitle=0, hitBoxX=55, hitBoxY=15, fontSize=30, font="Courier New", delay=120)
 
 
 def play():
@@ -297,9 +449,14 @@ def play():
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=110, hitBoxY=15, fontSize=29):
         loadingLaptopSpec()
         screen = "Ноутбук хар"
-    if button(x=130, y=230, width=270, height=50, massage="Новый процессор", color=(180, 180, 180), activeColor=0,
-              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=125, hitBoxY=15, fontSize=29):
+    elif button(x=130, y=230, width=270, height=50, massage="Новый процессор", color=(180, 180, 180), activeColor=0,
+                colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=125, hitBoxY=15, fontSize=29):
         screen = "Процессор хар"
+    elif button(x=130, y=330, width=270, height=50, massage="Ноутбуки", color=(180, 180, 180), activeColor=0,
+                colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=90, hitBoxY=15, fontSize=29):
+        if len(laptops) > 0:
+            loadingSeeLaptops()
+            screen = "Просмотр ноутбуков"
 
 
 def menu():
@@ -335,6 +492,8 @@ def game():
             laptopSpecGeneral()
         elif screen == "Процессор хар":
             processorSpec()
+        elif screen == "Просмотр ноутбуков":
+            seeLaptops()
 
         print_text(str(int(clock.get_fps())), 10, 10, (120, 120, 120), 20)
 
