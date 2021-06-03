@@ -314,6 +314,11 @@ def processorSpec(typeproc="Intel", modelproc=1):
                processor.get("height") + 25 + processor.get("miniheight") // 2,
                (0, 0, 0), int(processor.get("miniwidth") * 0.2636) - 1)
 
+    checkEscape("Меню")
+
+# И здесь тоже Дима
+def checkEscape(where):
+    global escapePressed, screen
     # Выход нажатием клавиши escape
     if keys[pygame.K_ESCAPE]:
         # Проверка на долговременное нажатие (если убрать - баги)
@@ -323,7 +328,7 @@ def processorSpec(typeproc="Intel", modelproc=1):
     else:
         # Продолжение проверки на долговременное нажатие
         if escapePressed:
-            screen = "Хотите выйти?"
+            screen = where
             escapePressed = False
 
 
