@@ -5,3 +5,4 @@ laptops = []
 thisLaptop = 0
 screenLaptop = 0
 keys = 0
+landscapeImg = 0

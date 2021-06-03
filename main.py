@@ -60,7 +60,8 @@ def loadingApp():
 
 
 def loadingLaptopSpec():
-    global thisLaptop, screen, screenLaptop
+    global thisLaptop, screen, screenLaptop, landscapeImg
+    landscapeImg = loadingImg("img/Пейзаж.jpg", 1, 1)
     laptops.append(Laptop(len(laptops)))
     thisLaptop = laptops[len(laptops) - 1]
     screenLaptop = 1
@@ -168,20 +169,29 @@ def laptopSpec2():
            colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
 
 
+def laptopSpec3():
+    display.blit(landscapeImg, (750 - thisLaptop.widthScreen / 2, 300 - thisLaptop.heightScreen / 2))
+
+
 def laptopSpecGeneral():
-    global screenLaptop
+    global screenLaptop, landscapeImg
     display.fill((200, 200, 200))
     button(x=1000, y=20, width=250, height=50, massage=f"Стоимость: {thisLaptop.price}", color=0, activeColor=0,
            colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=30)
-    pygame.draw.rect(display, (thisLaptop.color),
+    pygame.draw.rect(display, thisLaptop.color,
                      (750 - thisLaptop.width / 2, 300 - thisLaptop.height / 2, thisLaptop.width, thisLaptop.height))
     pygame.draw.rect(display, (20, 20, 20),
-                     (750 - thisLaptop.widthScreen / 2, 300 - thisLaptop.heightScreen / 2, thisLaptop.widthScreen, thisLaptop.heightScreen))
+                     (750 - thisLaptop.widthScreen / 2, 300 - thisLaptop.heightScreen / 2, thisLaptop.widthScreen,
+                      thisLaptop.heightScreen))
     pygame.draw.rect(display, (60, 60, 60),
-                     (750 - thisLaptop.width / 2 * 1.1, 300 + thisLaptop.height / 2, thisLaptop.width * 1.1, thisLaptop.depth))
+                     (750 - thisLaptop.width / 2 * 1.1, 300 + thisLaptop.height / 2, thisLaptop.width * 1.1,
+                      thisLaptop.depth))
     if button(x=1050, y=650, width=150, height=50, massage=f"Вперед", color=0, activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
         screenLaptop += 1
+        if screenLaptop == 3:
+            landscapeImg = pygame.transform.scale(landscapeImg,
+                                                  (thisLaptop.widthScreen, thisLaptop.heightScreen)).convert_alpha()
     if button(x=100, y=650, width=150, height=50, massage=f"Назад", color=0, activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
         if screenLaptop > 1:
@@ -190,8 +200,11 @@ def laptopSpecGeneral():
         laptopSpec1()
     elif screenLaptop == 2:
         laptopSpec2()
+    elif screenLaptop == 3:
+        laptopSpec3()
 
 
+# Дима здесь
 def processorSpec():
     pass
 
