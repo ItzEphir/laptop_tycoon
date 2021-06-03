@@ -13,3 +13,6 @@ class Laptop:
         self.originalHeightScreen = self.heightScreen
         self.resolutionX = 1366
         self.resolutionY = 768
+        self.color = (40, 40, 40)
+        self.colorNumber = 7
+        self.screenTech = "TN"
