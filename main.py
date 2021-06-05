@@ -9,6 +9,7 @@ from Processor import *
 
 pygame.init()
 levels = Levels()
+levels.refresh()
 
 # Шаблон
 # button(x=100, y=650, width=150, height=50,
@@ -93,6 +94,11 @@ def loadingSeeLaptops():
     global screenSeeLaptop, thisLaptop
     screenSeeLaptop = 1
     thisLaptop = laptops[0]
+
+
+def loadingTech():
+    global screenTech
+    screenTech = 1
 
 
 def laptopSpec1():
@@ -423,7 +429,7 @@ def seeLaptops():
             screenSeeLaptop -= 1
             thisLaptop = laptops[screenSeeLaptop - 1]
     if button(x=1200, y=10, width=50, height=50,
-              massage=f"X", color=(180, 180, 180), activeColor=0, colorTitle=(10, 10, 10),
+              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
               activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
         screen = "Игра"
     button(x=500, y=30, width=150, height=50,
@@ -440,11 +446,41 @@ def seeLaptops():
            activeColorTitle=0, hitBoxX=55, hitBoxY=15, fontSize=30, font="Courier New", delay=120)
 
 
+def technologies1():
+    button(x=100, y=30, width=150, height=50,
+           massage=f"Ширина ноутбука: {levels.maxWidth}", color=0, activeColor=0, colorTitle=(10, 10, 10),
+           activeColorTitle=0, hitBoxX=55, hitBoxY=20, fontSize=30, font="Courier New", delay=120)
+    button(x=100, y=100, width=150, height=50,
+           massage=f"Высота ноутбука: {levels.maxHeight}", color=0, activeColor=0, colorTitle=(10, 10, 10),
+           activeColorTitle=0, hitBoxX=55, hitBoxY=20, fontSize=30, font="Courier New", delay=120)
+
+
+def technologiesGeneral():
+    global screenTech, screen
+    display.fill((200, 200, 200))
+    if button(x=1050, y=650, width=150, height=50, massage=f"Вперед", color=0, activeColor=0,
+              colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
+        if screenTech < len(laptops):
+            screenTech += 1
+    if button(x=100, y=650, width=150, height=50,
+              massage=f"Назад", color=0, activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30, font="Courier New", delay=120):
+        if screenTech > 1:
+            screenTech -= 1
+    if button(x=1200, y=10, width=50, height=50,
+              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
+        screen = "Игра"
+    if screenTech == 1:
+        technologies1()
+
+
 def play():
     global screen
     display.fill((200, 200, 200))
-    button(x=20, y=10, width=250, height=50, massage=f"Денег: {gold}", color=0, activeColor=0,
-           colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=29)
+    button(x=20, y=10, width=250, height=50,
+           massage=f"Денег: {gold}", color=0, activeColor=0, colorTitle=(10, 10, 10),
+           activeColorTitle=0, hitBoxX=120, hitBoxY=15, fontSize=29, font="Courier New", delay=120)
     if button(x=130, y=130, width=270, height=50, massage="Новый ноутбук", color=(180, 180, 180), activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=110, hitBoxY=15, fontSize=29):
         loadingLaptopSpec()
@@ -457,6 +493,9 @@ def play():
         if len(laptops) > 0:
             loadingSeeLaptops()
             screen = "Просмотр ноутбуков"
+    elif button(x=130, y=430, width=270, height=50, massage="Технологии", color=(180, 180, 180), activeColor=0,
+                colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=95, hitBoxY=15, fontSize=29):
+        screen = "Технологии"
 
 
 def menu():
@@ -494,6 +533,8 @@ def game():
             processorSpec()
         elif screen == "Просмотр ноутбуков":
             seeLaptops()
+        elif screen == "Технологии":
+            technologiesGeneral()
 
         print_text(str(int(clock.get_fps())), 10, 10, (120, 120, 120), 20)
 
