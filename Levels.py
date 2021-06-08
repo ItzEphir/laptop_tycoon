@@ -7,6 +7,6 @@ class Levels:
 
     def refresh(self):
         self.originalMaxWidth = self.maxWidth
-        self.originalMaxHeight = 1
-        self.originalMaxWidthScreen = 1
-        self.originalMaxHeightScreen = 1
+        self.originalMaxHeight = self.maxHeight
+        self.originalMaxWidthScreen = self.maxWidthScreen
+        self.originalMaxHeightScreen = self.maxHeightScreen

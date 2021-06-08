@@ -98,6 +98,7 @@ def loadingSeeLaptops():
 
 def loadingTech():
     global screenTech
+    levels.refresh()
     screenTech = 1
 
 
@@ -348,6 +349,9 @@ def laptopSpecGeneral():
     else:
         if button(x=1050, y=650, width=150, height=50, massage=f"Разработать", color=0, activeColor=0,
                   colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30):
+            thisLaptop.countMark()
+            print(thisLaptop.markFirst)
+            print(thisLaptop.mark)
             laptops.append(thisLaptop)
             screen = "Игра"
     if button(x=100, y=650, width=150, height=50, massage=f"Назад", color=0, activeColor=0,
@@ -364,6 +368,10 @@ def laptopSpecGeneral():
         laptopSpec3()
     elif screenLaptop == 4:
         laptopSpecPrice()
+
+
+def showMark():
+    pass
 
 
 # Дима здесь
@@ -444,15 +452,36 @@ def seeLaptops():
     button(x=40, y=150, width=150, height=50,
            massage=f"Разрешение: {thisLaptop.resolutionX} X {thisLaptop.resolutionY}", color=0, activeColor=0, colorTitle=(10, 10, 10),
            activeColorTitle=0, hitBoxX=55, hitBoxY=15, fontSize=30, font="Courier New", delay=120)
+    button(x=40, y=210, width=150, height=50,
+           massage=f"Оценка: {thisLaptop.mark}", color=0, activeColor=0, colorTitle=(10, 10, 10),
+           activeColorTitle=0, hitBoxX=55, hitBoxY=15, fontSize=30, font="Courier New", delay=120)
 
 
 def technologies1():
     button(x=100, y=30, width=150, height=50,
            massage=f"Ширина ноутбука: {levels.maxWidth}", color=0, activeColor=0, colorTitle=(10, 10, 10),
            activeColorTitle=0, hitBoxX=55, hitBoxY=20, fontSize=30, font="Courier New", delay=120)
+    if button(x=50, y=30, width=50, height=50,
+              massage=f"<", color=(180, 180, 180), activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=13, hitBoxY=20, fontSize=30, font="Courier New", delay=200):
+        if levels.maxWidth > levels.originalMaxWidth:
+            levels.maxWidth -= 1
+    if button(x=470, y=30, width=50, height=50,
+              massage=f">", color=(180, 180, 180), activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=30, font="Courier New", delay=200):
+        levels.maxWidth += 1
     button(x=100, y=100, width=150, height=50,
            massage=f"Высота ноутбука: {levels.maxHeight}", color=0, activeColor=0, colorTitle=(10, 10, 10),
            activeColorTitle=0, hitBoxX=55, hitBoxY=20, fontSize=30, font="Courier New", delay=120)
+    if button(x=50, y=100, width=50, height=50,
+              massage=f"<", color=(180, 180, 180), activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=13, hitBoxY=20, fontSize=30, font="Courier New", delay=200):
+        if levels.maxHeight > levels.originalMaxHeight:
+            levels.maxHeight -= 1
+    if button(x=470, y=100, width=50, height=50,
+              massage=f">", color=(180, 180, 180), activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=30, font="Courier New", delay=200):
+        levels.maxHeight += 1
 
 
 def technologiesGeneral():
@@ -495,6 +524,7 @@ def play():
             screen = "Просмотр ноутбуков"
     elif button(x=130, y=430, width=270, height=50, massage="Технологии", color=(180, 180, 180), activeColor=0,
                 colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=95, hitBoxY=15, fontSize=29):
+        loadingTech()
         screen = "Технологии"
 
 
