@@ -10,4 +10,4 @@ landscapeImgEdit = 0
 newLandscapeImg = 0
 
 escapePressed = False
-processors = []
+processor = None

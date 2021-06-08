@@ -285,27 +285,34 @@ def laptopSpecGeneral():
 
 
 # Дима здесь
-def processorSpec(typeproc="Intel", modelproc=1):
-    global screen, escapePressed, processors
+def processorSpec(arrows):
+    global screen, escapePressed, processor
 
     # Фон
     display.fill((0, 0, 194))
 
-    if typeproc == "Intel":
-        processors = [Processor(100, 100, 1, "Intel"), Processor(100, 105, 2, "Intel"), Processor(100, 110, 3, "Intel")]
-    elif typeproc == "AMD":
-        processors = [Processor(100, 75, 1, "AMD"), Processor(150, 85, 2, "AMD"), Processor(150, 90, 3, "AMD")]
-
-    if modelproc == 1:
-        processor = processors[1]
-    elif modelproc == 2:
-        processor = processors[2]
-    elif modelproc == 3:
-        processor = processors[3]
-
     processor.set()
+    print(processor.get("model list"))
 
-    checkEscape("Меню")
+    print_text("Модель", halfWidth - 500, halfHeight - 85, (255, 255, 255), 14)
+
+    if processor.get("model list")[0] == processor.get("model"):
+        display.blit(arrows[1], (halfWidth - 440, halfHeight - 100))
+    else:
+        display.blit(arrows[3], (halfWidth - 440, halfHeight - 100))
+
+    if processor.get("model list")[len(processor.get("model list")) - 1] == processor.get("model"):
+        display.blit(arrows[0], (halfWidth - 560, halfHeight - 100))
+    else:
+        display.blit(arrows[2], (halfWidth - 560, halfHeight - 100))
+        if button(halfWidth - 560, halfHeight - 100, 50, 50, ""):
+            counter = 0
+            for i in processor.get("model list"):
+                if i == processor.get("model"):
+                    processor.change_model(counter - 1)
+                counter += 1
+
+    checkEscape("Игра")
 
 
 # И здесь тоже Дима
@@ -324,6 +331,21 @@ def checkEscape(where):
             escapePressed = False
 
 
+def loadingBeforeProcessor():
+    global screen, processor
+
+    processor = Processor(100, WIDTH - 350, halfHeight - 500, 100,
+                          load("files/processor.txt"), load("files/processorModels.txt"))
+
+    allow_left_arrow = pygame.image.load("img/allow_left_arrow.png")
+    allow_right_arrow = pygame.image.load("img/allow_right_arrow.png")
+    cancel_left_arrow = pygame.image.load("img/cancel_left_arrow.png")
+    cancel_right_arrow = pygame.image.load("img/cancel_right_arrow.png")
+
+    screen = "Процессор хар"
+    return (allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow)
+
+
 def play():
     global screen
     display.fill((200, 200, 200))
@@ -335,7 +357,7 @@ def play():
         screen = "Ноутбук хар"
     if button(x=130, y=230, width=270, height=50, massage="Новый процессор", color=(180, 180, 180), activeColor=0,
               colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=125, hitBoxY=15, fontSize=29):
-        screen = "Процессор хар"
+        screen = "Зарузка процессора"
 
 
 def menu():
@@ -351,6 +373,7 @@ def menu():
 def game():
     global game_end, display, keys
     game_end = False
+    arrows = 0
     while not game_end:
         clock.tick(FPS)
         keys = pygame.key.get_pressed()
@@ -369,8 +392,10 @@ def game():
             play()
         elif screen == "Ноутбук хар":
             laptopSpecGeneral()
+        elif screen == "Зарузка процессора":
+            arrows = loadingBeforeProcessor()
         elif screen == "Процессор хар":
-            processorSpec()
+            processorSpec(arrows)
 
         print_text(str(int(clock.get_fps())), 10, 10, (120, 120, 120), 20)
 
