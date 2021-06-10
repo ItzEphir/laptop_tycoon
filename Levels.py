@@ -4,3 +4,9 @@ class Levels:
         self.maxHeight = 1
         self.maxWidthScreen = 1
         self.maxHeightScreen = 1
+
+    def refresh(self):
+        self.originalMaxWidth = self.maxWidth
+        self.originalMaxHeight = self.maxHeight
+        self.originalMaxWidthScreen = self.maxWidthScreen
+        self.originalMaxHeightScreen = self.maxHeightScreen
