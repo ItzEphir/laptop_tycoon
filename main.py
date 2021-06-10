@@ -292,7 +292,6 @@ def processorSpec(arrows):
     display.fill((0, 0, 194))
 
     processor.set()
-    print(processor.get("model list"))
 
     print_text("Модель", halfWidth - 500, halfHeight - 85, (255, 255, 255), 14)
 
