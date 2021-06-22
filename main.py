@@ -383,31 +383,52 @@ def processorSpec(arrows):
 
     processor.set()
 
-    print_text("Модель", halfWidth - 500, halfHeight - 85, (255, 255, 255), 14)
+    print_text("Частота", halfWidth - 500, halfHeight - 85, (255, 255, 255), 14)
 
-    if processor.get("model list")[0] == processor.get("model"):
-        display.blit(arrows[2], (halfWidth - 560, halfHeight - 100))
-    else:
-        display.blit(arrows[0], (halfWidth - 560, halfHeight - 100))
-        if button(halfWidth - 560, halfHeight - 100, 50, 50, ""):
-            counter = 0
-            for i in processor.get("model list"):
-                if i == processor.get("model"):
-                    processor.change_model(counter - 1)
-                    return
-                counter += 1
+    if button(x=1200, y=10, width=50, height=50,
+              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
+        screen = "Игра"
 
-    if processor.get("model list")[len(processor.get("model list")) - 1] == processor.get("model"):
-        display.blit(arrows[3], (halfWidth - 440, halfHeight - 100))
-    else:
+    if processor.get("frequency") != 5.0:
         display.blit(arrows[1], (halfWidth - 440, halfHeight - 100))
         if button(halfWidth - 440, halfHeight - 100, 50, 50, ""):
-            counter = 0
-            for i in processor.get("model list"):
-                if i == processor.get("model"):
-                    processor.change_model(counter + 1)
-                    return
-                counter += 1
+            processor.frequency_plus()
+    else:
+        display.blit(arrows[3], (halfWidth - 440, halfHeight - 100))
+
+    if processor.get("frequency") != 1.0:
+        display.blit(arrows[0], (halfWidth - 560, halfHeight - 100))
+        if button(halfWidth - 560, halfHeight - 100, 50, 50, ""):
+            processor.frequency_minus()
+    else:
+        display.blit(arrows[2], (halfWidth - 560, halfHeight - 100))
+
+    print(processor.get("frequency"))
+
+#    if processor.get("model list")[0] == processor.get("model"):
+#        display.blit(arrows[2], (halfWidth - 560, halfHeight - 100))
+#    else:
+#        display.blit(arrows[0], (halfWidth - 560, halfHeight - 100))
+#        if button(halfWidth - 560, halfHeight - 100, 50, 50, ""):
+#            counter = 0
+#            for i in processor.get("model list"):
+#                if i == processor.get("model"):
+#                    processor.change_model(counter - 1)
+#                    return
+#                counter += 1
+#
+#    if processor.get("model list")[len(processor.get("model list")) - 1] == processor.get("model"):
+#        display.blit(arrows[3], (halfWidth - 440, halfHeight - 100))
+#    else:
+#        display.blit(arrows[1], (halfWidth - 440, halfHeight - 100))
+#        if button(halfWidth - 440, halfHeight - 100, 50, 50, ""):
+#            counter = 0
+#            for i in processor.get("model list"):
+#                if i == processor.get("model"):
+#                    processor.change_model(counter + 1)
+#                    return
+#                counter += 1
 
     checkEscape("Игра")
 
@@ -440,7 +461,7 @@ def loadingBeforeProcessor():
     cancel_right_arrow = pygame.image.load("img/cancel_right_arrow.png")
 
     screen = "Процессор хар"
-    return (allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow)
+    return allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow
 
 
 def seeLaptops():

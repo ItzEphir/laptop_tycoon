@@ -7,7 +7,7 @@ pygame.init()
 
 
 class Processor:
-    def __init__(self, width, x, y, price, processorSettings, processorModels):
+    def __init__(self, width, x, y, price, processorSettings, processorModels, frequency=1.0):
         self.__width = width
         self.__height = width
         self.__x = x
@@ -16,6 +16,7 @@ class Processor:
         self.__processorSettings = processorSettings
         self.__model = None
         self.__modelList = processorModels
+        self.__frequency = frequency
         self.__miniwidth = self.__width // 2
         self.__miniheight = self.__height // 2
         self.__image = None
@@ -53,6 +54,35 @@ class Processor:
     def change_model(self, arr):
         self.__model = self.__modelList[arr]
 
+    def frequency_minus(self):
+        if self.__frequency == 4.1 or self.__frequency == 3.3 or self.__frequency == 2.8 or self.__frequency == 2.3 or\
+                self.__frequency == 1.7 or self.__frequency == 1.4 or self.__frequency == 1.2:
+            self.__frequency -= 0.05
+            self.__frequency *= 10
+            self.__frequency = int(self.__frequency)
+            self.__frequency = float(self.__frequency)
+            self.__frequency /= 10
+            return
+        self.__frequency -= 0.1
+        self.__frequency *= 10
+        self.__frequency = int(self.__frequency)
+        self.__frequency = float(self.__frequency)
+        self.__frequency /= 10
+
+    def frequency_plus(self):
+        if self.__frequency == 4.1 or self.__frequency == 4.3 or self.__frequency == 4.6 or self.__frequency == 4.8:
+            self.__frequency += 0.15
+            self.__frequency *= 10
+            self.__frequency = int(self.__frequency)
+            self.__frequency = float(self.__frequency)
+            self.__frequency /= 10
+            return
+        self.__frequency += 0.1
+        self.__frequency *= 10
+        self.__frequency = int(self.__frequency)
+        self.__frequency = float(self.__frequency)
+        self.__frequency /= 10
+
     def get(self, whatget):
         if whatget == "width":
             return self.__width
@@ -68,3 +98,5 @@ class Processor:
             return self.__miniwidth
         elif whatget == "miniheight":
             return self.__miniheight
+        elif whatget == "frequency":
+            return self.__frequency
