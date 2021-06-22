@@ -443,7 +443,6 @@ def loadingBeforeProcessor():
     return (allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow)
 
 
-
 def seeLaptops():
     global screen, thisLaptop, screenSeeLaptop
     display.fill((200, 200, 200))
@@ -546,7 +545,7 @@ def play():
         screen = "Ноутбук хар"
     elif button(x=130, y=230, width=270, height=50, massage="Новый процессор", color=(180, 180, 180), activeColor=0,
                 colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=125, hitBoxY=15, fontSize=29):
-        screen = "Загрузка Процессора"
+        screen = "Процессор хар"
     elif button(x=130, y=330, width=270, height=50, massage="Ноутбуки", color=(180, 180, 180), activeColor=0,
                 colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=90, hitBoxY=15, fontSize=29):
         if len(laptops) > 0:
