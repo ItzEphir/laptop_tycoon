@@ -13,3 +13,4 @@ screenTech = 1
 
 escapePressed = False
 processors = []
+processor = None
