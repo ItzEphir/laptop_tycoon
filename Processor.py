@@ -16,6 +16,7 @@ class Processor:
         self.__processorSettings = processorSettings
         self.__model = None
         self.__modelList = processorModels
+        self.__name = ""
         self.__frequency = frequency
         self.__miniwidth = self.__width // 2
         self.__miniheight = self.__height // 2
@@ -53,6 +54,9 @@ class Processor:
 
     def change_model(self, arr):
         self.__model = self.__modelList[arr]
+
+    def change_name(self, newname):
+        self.__name = newname
 
     def frequency_minus(self):
         if self.__frequency == 4.1 or self.__frequency == 3.3 or self.__frequency == 2.8 or self.__frequency == 2.3 or\
@@ -98,5 +102,7 @@ class Processor:
             return self.__miniwidth
         elif whatget == "miniheight":
             return self.__miniheight
+        elif whatget == "name":
+            return self.__name
         elif whatget == "frequency":
             return self.__frequency

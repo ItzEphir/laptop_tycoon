@@ -6,6 +6,7 @@ from Laptop import *
 from Levels import *
 from PhotoEtit import *
 from Processor import *
+from key_text import *
 
 pygame.init()
 levels = Levels()
@@ -376,6 +377,29 @@ def showMark():
 
 # Дима здесь
 def processorSpec(arrows):
+    global screen, escapePressed, processor, buttonPressed
+
+    display.fill((0, 0, 194))
+
+    print_text("Название:", halfWidth - 80, halfHeight - 500, (255, 255, 255))
+
+    if button(halfWidth - 200, halfHeight - 400, 300, 50, "____________", 0, 0, (255, 255, 255)):
+        buttonPressed = True
+    elif button(0, 0, WIDTH, halfHeight - 400, "") or button(0, 0, halfWidth - 200, HEIGHT, "") or \
+            button(0, halfHeight - 350, WIDTH, HEIGHT - (halfHeight - 350), "") or \
+            button(halfWidth + 100, 0, WIDTH - (halfHeight + 100), HEIGHT, ""):
+        buttonPressed = False
+
+    if buttonPressed:
+        get = keyboard_to_text(keys, processor)
+        #print(get[1])
+        processor.change_name(get[1])
+        processor.change_name(get[0])
+
+    print_text(processor.get("name"), halfWidth - 100, halfHeight - 400)
+
+
+def processorSpec2(arrows):
     global screen, escapePressed, processor
 
     # Фон
@@ -383,7 +407,8 @@ def processorSpec(arrows):
 
     processor.set()
 
-    print_text("Частота", halfWidth - 500, halfHeight - 85, (255, 255, 255), 14)
+    print_text("Частота", halfWidth - 510, halfHeight - 150, (255, 255, 255), 14)
+    print_text(str(processor.get("frequency")), halfWidth - 500, halfHeight - 85)
 
     if button(x=1200, y=10, width=50, height=50,
               massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
@@ -391,11 +416,11 @@ def processorSpec(arrows):
         screen = "Игра"
 
     if processor.get("frequency") != 5.0:
-        display.blit(arrows[1], (halfWidth - 440, halfHeight - 100))
-        if button(halfWidth - 440, halfHeight - 100, 50, 50, ""):
+        display.blit(arrows[1], (halfWidth - 450, halfHeight - 100))
+        if button(halfWidth - 450, halfHeight - 100, 50, 50, ""):
             processor.frequency_plus()
     else:
-        display.blit(arrows[3], (halfWidth - 440, halfHeight - 100))
+        display.blit(arrows[3], (halfWidth - 450, halfHeight - 100))
 
     if processor.get("frequency") != 1.0:
         display.blit(arrows[0], (halfWidth - 560, halfHeight - 100))
@@ -404,31 +429,6 @@ def processorSpec(arrows):
     else:
         display.blit(arrows[2], (halfWidth - 560, halfHeight - 100))
 
-    print(processor.get("frequency"))
-
-#    if processor.get("model list")[0] == processor.get("model"):
-#        display.blit(arrows[2], (halfWidth - 560, halfHeight - 100))
-#    else:
-#        display.blit(arrows[0], (halfWidth - 560, halfHeight - 100))
-#        if button(halfWidth - 560, halfHeight - 100, 50, 50, ""):
-#            counter = 0
-#            for i in processor.get("model list"):
-#                if i == processor.get("model"):
-#                    processor.change_model(counter - 1)
-#                    return
-#                counter += 1
-#
-#    if processor.get("model list")[len(processor.get("model list")) - 1] == processor.get("model"):
-#        display.blit(arrows[3], (halfWidth - 440, halfHeight - 100))
-#    else:
-#        display.blit(arrows[1], (halfWidth - 440, halfHeight - 100))
-#        if button(halfWidth - 440, halfHeight - 100, 50, 50, ""):
-#            counter = 0
-#            for i in processor.get("model list"):
-#                if i == processor.get("model"):
-#                    processor.change_model(counter + 1)
-#                    return
-#                counter += 1
 
     checkEscape("Игра")
 

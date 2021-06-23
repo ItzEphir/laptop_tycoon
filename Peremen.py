@@ -14,3 +14,7 @@ screenTech = 1
 escapePressed = False
 processors = []
 processor = None
+buttonPressed = False
+per = ""
+keyPressed = False
+needKey = ""
