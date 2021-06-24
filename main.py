@@ -376,7 +376,7 @@ def showMark():
 
 
 # Дима здесь
-def processorSpec(arrows):
+def processorSpec():
     global screen, escapePressed, processor, buttonPressed
 
     display.fill((0, 0, 194))
@@ -392,11 +392,28 @@ def processorSpec(arrows):
 
     if buttonPressed:
         get = keyboard_to_text(keys, processor)
-        #print(get[1])
         processor.change_name(get[1])
         processor.change_name(get[0])
+        exition = processor.get("name") + "|"
+    else:
+        exition = processor.get("name")
 
-    print_text(processor.get("name"), halfWidth - 100, halfHeight - 400)
+    print_text(exition, halfWidth - 100, halfHeight - 400, (255, 255, 255))
+
+    if processor.get("name") != "":
+        if button(halfWidth - 77, halfHeight - 300, 100, 50, "Далее", (255, 255, 255), (150, 150, 150),
+                  (0, 0, 0), (255, 255, 255), 40, 10, 25, "Courier New"):
+            screen = "Процессор хар2"
+    else:
+        button(halfWidth - 77, halfHeight - 300, 100, 50, "Далее", (150, 150, 150), 0,
+               (255, 255, 255), 0, 40, 10, 25, "Courier New")
+
+    if button(x=1200, y=10, width=50, height=50,
+              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
+        screen = "Игра"
+
+    checkEscape("Игра")
 
 
 def processorSpec2(arrows):
@@ -409,19 +426,12 @@ def processorSpec2(arrows):
 
     print_text("Частота", halfWidth - 510, halfHeight - 150, (255, 255, 255), 14)
     print_text(str(processor.get("frequency")), halfWidth - 500, halfHeight - 85)
-
-    if button(x=1200, y=10, width=50, height=50,
-              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
-              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
-        screen = "Игра"
-
     if processor.get("frequency") != 5.0:
         display.blit(arrows[1], (halfWidth - 450, halfHeight - 100))
         if button(halfWidth - 450, halfHeight - 100, 50, 50, ""):
             processor.frequency_plus()
     else:
         display.blit(arrows[3], (halfWidth - 450, halfHeight - 100))
-
     if processor.get("frequency") != 1.0:
         display.blit(arrows[0], (halfWidth - 560, halfHeight - 100))
         if button(halfWidth - 560, halfHeight - 100, 50, 50, ""):
@@ -429,8 +439,14 @@ def processorSpec2(arrows):
     else:
         display.blit(arrows[2], (halfWidth - 560, halfHeight - 100))
 
+    print_text("Кол-во ядер", halfWidth - 510, halfHeight - 300, (255, 255, 255), 14)
 
-    checkEscape("Игра")
+    if button(x=1200, y=10, width=50, height=50,
+              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
+        screen = "Игра"
+
+    checkEscape("Процессор хар")
 
 
 # И здесь тоже Дима
@@ -611,7 +627,9 @@ def game():
         elif screen == "Ноутбук хар":
             laptopSpecGeneral()
         elif screen == "Процессор хар":
-            processorSpec(arrows)
+            processorSpec()
+        elif screen == "Процессор хар2":
+            processorSpec2(arrows)
         elif screen == "Загрузка Процессора":
             arrows = loadingBeforeProcessor()
         elif screen == "Просмотр ноутбуков":

@@ -110,6 +110,50 @@ def keyboard_to_text(keys, processor):
             if not keyPressed:
                 keyPressed = True
                 needKey = "M"
+        elif keys[pygame.K_0]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = "0"
+        elif keys[pygame.K_1]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = "1"
+        elif keys[pygame.K_2]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = "2"
+        elif keys[pygame.K_3]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = "3"
+        elif keys[pygame.K_4]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = "4"
+        elif keys[pygame.K_5]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = "5"
+        elif keys[pygame.K_6]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = "6"
+        elif keys[pygame.K_7]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = "7"
+        elif keys[pygame.K_8]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = "8"
+        elif keys[pygame.K_9]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = "9"
+        elif keys[pygame.K_SPACE]:
+            if not keyPressed:
+                keyPressed = True
+                needKey = " "
         elif keys[pygame.K_BACKSPACE] and len(per) != 0:
             keyPressed = True
             needKey = "delete"
@@ -267,6 +311,10 @@ def keyboard_to_text(keys, processor):
         if not keyPressed:
             keyPressed = True
             needKey = "9"
+    elif keys[pygame.K_SPACE]:
+        if not keyPressed:
+            keyPressed = True
+            needKey = " "
     elif keys[pygame.K_BACKSPACE] and len(per) != 0:
         keyPressed = True
         needKey = "delete"

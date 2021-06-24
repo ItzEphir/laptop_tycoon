@@ -39,6 +39,7 @@ class Processor:
 
     def set(self):
         display.blit(self.__image, (self.__x, self.__y))
+        self.__model = self.__name
         self.__printModel(self.__model, self.__x + 100, self.__y + 75, self.__text_color, self.__text_size)
 
     def __loadImg(self):
