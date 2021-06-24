@@ -110,17 +110,16 @@ def keyboard_to_text(keys, processor):
             if not keyPressed:
                 keyPressed = True
                 needKey = "M"
-        elif keys[pygame.K_BACKSPACE]:
+        elif keys[pygame.K_BACKSPACE] and len(per) != 0:
             keyPressed = True
             needKey = "delete"
-            #print("lol")
         else:
             if keyPressed:
                 keyPressed = False
                 if needKey == "delete":
-                    processor.change_name(processor.get("name")[0:-1])
-                    #print("lol2")
-                    #print(processor.get("name"))
+                    per = list(per)
+                    per.pop(len(per) - 1)
+                    per = "".join(per)
                 else:
                     per += needKey
                 return per, processor.get("name")
@@ -268,14 +267,18 @@ def keyboard_to_text(keys, processor):
         if not keyPressed:
             keyPressed = True
             needKey = "9"
-    elif keys[pygame.K_BACKSPACE]:
+    elif keys[pygame.K_BACKSPACE] and len(per) != 0:
+        keyPressed = True
         needKey = "delete"
     else:
         if keyPressed:
             keyPressed = False
             if needKey == "delete":
-                processor.change_name(processor.get("name")[0:-1])
+                per = list(per)
+                per.pop(len(per) - 1)
+                per = "".join(per)
             else:
                 per += needKey
+            return per, processor.get("name")
 
     return per, processor
