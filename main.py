@@ -35,6 +35,11 @@ def save(file, whatSave):
     f.close()
 
 
+def create(way):
+    f = open(way, "w")
+    f.close()
+
+
 def cleaning(file):
     global availability_save
     f = open(file, "r")
@@ -425,7 +430,7 @@ def processorSpec2(arrows):
     processor.set()
 
     print_text("Частота", halfWidth - 510, halfHeight - 150, (255, 255, 255), 14)
-    print_text(str(processor.get("frequency")), halfWidth - 500, halfHeight - 85)
+    print_text(str(processor.get("frequency")), halfWidth - 500, halfHeight - 85, (255, 255, 255))
     if processor.get("frequency") != 5.0:
         display.blit(arrows[1], (halfWidth - 450, halfHeight - 100))
         if button(halfWidth - 450, halfHeight - 100, 50, 50, ""):
@@ -440,6 +445,41 @@ def processorSpec2(arrows):
         display.blit(arrows[2], (halfWidth - 560, halfHeight - 100))
 
     print_text("Кол-во ядер", halfWidth - 510, halfHeight - 300, (255, 255, 255), 14)
+    print_text(str(processor.get("cores")), halfWidth - 485, halfHeight - 235, (255, 255, 255))
+    if processor.get("cores") != 16:
+        display.blit(arrows[1], (halfWidth - 450, halfHeight - 250))
+        if button(halfWidth - 450, halfHeight - 250, 50, 50, ""):
+            processor.cores_plus()
+    else:
+        display.blit(arrows[3], (halfWidth - 450, halfHeight - 250))
+    if processor.get("cores") != 1:
+        display.blit(arrows[0], (halfWidth - 560, halfHeight - 250))
+        if button(halfWidth - 560, halfHeight - 250, 50, 50, ""):
+            processor.cores_minus()
+    else:
+        display.blit(arrows[2], (halfWidth - 560, halfHeight - 250))
+
+    print_text("Кол-во потоков" + " (" + processor.get("flow technology") + ")", halfWidth - 580, halfHeight - 450, (255, 255, 255), 14)
+    print_text(str(processor.get("flows")), halfWidth - 485, halfHeight - 385, (255, 255, 255))
+    if processor.get("flows") != 48 and processor.get("flow technology") == "Hyper Threading" or\
+            processor.get("flows") == 1:
+        display.blit(arrows[1], (halfWidth - 450, halfHeight - 400))
+        if button(halfWidth - 450, halfHeight - 400, 50, 50, ""):
+            processor.flows_plus()
+    else:
+        display.blit(arrows[3], (halfWidth - 450, halfHeight - 400))
+    if (processor.get("flows") != 2 and processor.get("flow technology") == "Multi Threading") or\
+            processor.get("cores") == 1 and processor.get("flows") != 1:
+        display.blit(arrows[0], (halfWidth - 560, halfHeight - 400))
+        if button(halfWidth - 560, halfHeight - 400, 50, 50, ""):
+            processor.flows_minus()
+    else:
+        display.blit(arrows[2], (halfWidth - 560, halfHeight - 400))
+
+    if button(x=1150, y=600, width=100, height=50,
+              massage="=>", color=0, activeColor=0, colorTitle=(10, 10 ,10),
+              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
+        screen = "Процессор сделан"
 
     if button(x=1200, y=10, width=50, height=50,
               massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
@@ -447,6 +487,26 @@ def processorSpec2(arrows):
         screen = "Игра"
 
     checkEscape("Процессор хар")
+
+
+def processorDone():
+    global screen, point, processor
+
+    display.fill((0, 0, 194))
+
+    processor.set()
+
+    print_text("Загрузка", halfWidth - 100, halfHeight - 100, (255, 255, 255))
+    create(f"files/createdProcessors/processor{processor.get('count') + 1}")
+    processor.count_plus(1)
+
+    write(str(f'{processor.get("name")}/{str(processor.get("frequency"))}/\
+{str(processor.get("cores"))}/{str(processor.get("flows"))}/\
+{processor.get("flow technology")}'), f'files/createdProcessors/processor{processor.get("count")}')
+
+    save("files/processors.txt", [str(processor.get("count"))])
+    processor = None
+    screen = "Игра"
 
 
 # И здесь тоже Дима
@@ -468,13 +528,17 @@ def checkEscape(where):
 def loadingBeforeProcessor():
     global screen, processor
 
-    processor = Processor(100, WIDTH - 350, halfHeight - 500, 100,
-                          load("files/processor.txt"), load("files/processorModels.txt"))
+    f = open("files/processors.txt", "r")
+    processorSettings = int(f.read())
+    f.close()
 
-    allow_left_arrow = pygame.image.load("img/allow_left_arrow.png")
-    allow_right_arrow = pygame.image.load("img/allow_right_arrow.png")
-    cancel_left_arrow = pygame.image.load("img/cancel_left_arrow.png")
-    cancel_right_arrow = pygame.image.load("img/cancel_right_arrow.png")
+    processor = Processor(WIDTH - 350, halfHeight - 500, 100,
+                          processorSettings)
+
+    allow_left_arrow = loadingImg("img/allow_left_arrow.png", 1, 1)
+    allow_right_arrow = loadingImg("img/allow_right_arrow.png", 1, 1)
+    cancel_left_arrow = loadingImg("img/cancel_left_arrow.png", 1, 1)
+    cancel_right_arrow = loadingImg("img/cancel_right_arrow.png", 1, 1)
 
     screen = "Процессор хар"
     return allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow
@@ -632,6 +696,8 @@ def game():
             processorSpec2(arrows)
         elif screen == "Загрузка Процессора":
             arrows = loadingBeforeProcessor()
+        elif screen == "Процессор сделан":
+            processorDone()
         elif screen == "Просмотр ноутбуков":
             seeLaptops()
         elif screen == "Технологии":

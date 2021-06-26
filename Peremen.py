@@ -18,3 +18,4 @@ buttonPressed = False
 per = ""
 keyPressed = False
 needKey = ""
+point = ""

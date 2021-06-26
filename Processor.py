@@ -7,19 +7,16 @@ pygame.init()
 
 
 class Processor:
-    def __init__(self, width, x, y, price, processorSettings, processorModels, frequency=1.0):
-        self.__width = width
-        self.__height = width
+    def __init__(self, x, y, price, processorSettings, frequency=1.0):
         self.__x = x
         self.__y = y
         self.__price = price
         self.__processorSettings = processorSettings
-        self.__model = None
-        self.__modelList = processorModels
         self.__name = ""
         self.__frequency = frequency
-        self.__miniwidth = self.__width // 2
-        self.__miniheight = self.__height // 2
+        self.__cores = 1
+        self.__flows = 2
+        self.__flow_technology = "Hyper Threading"
         self.__image = None
         self.__text = None
         self.__font_type = None
@@ -27,6 +24,7 @@ class Processor:
         self.__text_half_width = None
         self.__text_color = (0, 0, 0)
         self.__text_size = 14
+        self.__count = 0
         self.__loadSettings()
         self.__loadImg()
 
@@ -39,8 +37,7 @@ class Processor:
 
     def set(self):
         display.blit(self.__image, (self.__x, self.__y))
-        self.__model = self.__name
-        self.__printModel(self.__model, self.__x + 100, self.__y + 75, self.__text_color, self.__text_size)
+        self.__printModel(self.__name, self.__x + 100, self.__y + 75, self.__text_color, self.__text_size)
 
     def __loadImg(self):
         self.__image = pygame.image.load("img/processor.png")
@@ -48,13 +45,7 @@ class Processor:
                                               (self.__image.get_width() * 2, self.__image.get_height() * 2))
 
     def __loadSettings(self):
-        if self.__modelList[0] != "0":
-            self.__model = self.__modelList[0]
-        else:
-            self.__model = "My Processor"
-
-    def change_model(self, arr):
-        self.__model = self.__modelList[arr]
+        self.__count = self.__processorSettings
 
     def change_name(self, newname):
         self.__name = newname
@@ -67,12 +58,14 @@ class Processor:
             self.__frequency = int(self.__frequency)
             self.__frequency = float(self.__frequency)
             self.__frequency /= 10
+            self.__price -= 2
             return
         self.__frequency -= 0.1
         self.__frequency *= 10
         self.__frequency = int(self.__frequency)
         self.__frequency = float(self.__frequency)
         self.__frequency /= 10
+        self.__price -= 2
 
     def frequency_plus(self):
         if self.__frequency == 4.1 or self.__frequency == 4.3 or self.__frequency == 4.6 or self.__frequency == 4.8:
@@ -81,29 +74,77 @@ class Processor:
             self.__frequency = int(self.__frequency)
             self.__frequency = float(self.__frequency)
             self.__frequency /= 10
+            self.__price += 2
             return
         self.__frequency += 0.1
         self.__frequency *= 10
         self.__frequency = int(self.__frequency)
         self.__frequency = float(self.__frequency)
         self.__frequency /= 10
+        self.__price += 2
+
+    def cores_plus(self):
+        self.__cores *= 2
+        self.__flows = self.__cores * 2
+        self.__flow_technology = "Hyper Threading"
+        self.__price += 10
+
+    def cores_minus(self):
+        self.__cores //= 2
+        self.__flows = self.__cores * 2
+        self.__flow_technology = "Hyper Threading"
+        self.__price -= 10
+
+    def flows_plus(self):
+        self.__flows += self.__cores
+        if self.__cores != 1 or self.__flows == 3:
+            self.__flow_technology = "Multi Threading"
+        elif self.__cores == 1 and self.__flows == 2:
+            self.__flow_technology = "Hyper Threading"
+        self.__price += 10
+
+    def flows_minus(self):
+        self.__flows -= self.__cores
+        if self.__cores != 1 or self.__flows == 2:
+            self.__flow_technology = "Hyper Threading"
+        elif self.__flows == 1:
+            self.__flow_technology = ""
+        self.__price -= 10
+
+    def count_plus(self, arr):
+        self.__count += arr
 
     def get(self, whatget):
-        if whatget == "width":
-            return self.__width
-        elif whatget == "height":
-            return self.__height
-        elif whatget == "price":
+        if whatget == "price":
             return self.__price
-        elif whatget == "model":
-            return self.__model
-        elif whatget == "model list":
-            return self.__modelList
-        elif whatget == "miniwidth":
-            return self.__miniwidth
-        elif whatget == "miniheight":
-            return self.__miniheight
         elif whatget == "name":
             return self.__name
         elif whatget == "frequency":
             return self.__frequency
+        elif whatget == "cores":
+            return self.__cores
+        elif whatget == "flows":
+            return self.__flows
+        elif whatget == "flow technology":
+            return self.__flow_technology
+        elif whatget == 'count':
+            return self.__count
+
+    def __del__(self):
+        self.__x = None
+        self.__y = None
+        self.__price = None
+        self.__processorSettings = None
+        self.__name = None
+        self.__frequency = None
+        self.__cores = None
+        self.__flows = None
+        self.__flow_technology = None
+        self.__image = None
+        self.__text = None
+        self.__font_type = None
+        self.__text_width = None
+        self.__text_half_width = None
+        self.__text_color = None
+        self.__text_size = None
+        self.__count = None
