@@ -502,27 +502,13 @@ def processorDone():
 
     write(str(f'{processor.get("name")}/{str(processor.get("frequency"))}/\
 {str(processor.get("cores"))}/{str(processor.get("flows"))}/\
-{processor.get("flow technology")}'), f'files/createdProcessors/processor{processor.get("count")}')
+{processor.get("flow technology")}/{str(processor.get("price"))}'), f'files/createdProcessors/processor{processor.get("count")}')
 
     save("files/processors.txt", [str(processor.get("count"))])
+
     processor = None
     screen = "Игра"
-
-
-# И здесь тоже Дима
-def checkEscape(where):
-    global escapePressed, screen
-    # Выход нажатием клавиши escape
-    if keys[pygame.K_ESCAPE]:
-        # Проверка на долговременное нажатие (если убрать - баги)
-        if not escapePressed:
-            escapePressed = True
-            pygame.time.delay(120)
-    else:
-        # Продолжение проверки на долговременное нажатие
-        if escapePressed:
-            screen = where
-            escapePressed = False
+    return
 
 
 def loadingBeforeProcessor():
@@ -542,6 +528,72 @@ def loadingBeforeProcessor():
 
     screen = "Процессор хар"
     return allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow
+
+
+def loadingBeforeSeeProc():
+    global screen, processors, processorsClasses
+    count = int(load("files/processors.txt")[0])
+    if count > 0:
+        for i in range(count):
+            processors.append(load(f"files/createdProcessors/processor{i + 1}"))
+
+    for i in range(len(processors)):
+        processorsClasses.append(Processor(WIDTH - 350, halfHeight - 500, int(processors[i][5]), count,
+                                 float(processors[i][1]), int(processors[i][2]), int(processors[i][3]),
+                                 str(processors[i][0]), str(processors[i][4])))
+    allow_left_arrow = loadingImg("img/allow_left_arrow.png", 1, 1)
+    allow_right_arrow = loadingImg("img/allow_right_arrow.png", 1, 1)
+    cancel_left_arrow = loadingImg("img/cancel_left_arrow.png", 1, 1)
+    cancel_right_arrow = loadingImg("img/cancel_right_arrow.png", 1, 1)
+
+    if len(processors) > 0:
+        screen = "Просмотр процессоров"
+    else:
+        screen = "Игра"
+    return allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow
+
+
+def seeProcessors(arrows):
+    global screen, currentProcessor
+    display.fill((0, 0, 194))
+
+    if currentProcessor != len(processorsClasses):
+        display.blit(arrows[1], (1150, halfHeight - 50))
+        if button(1150, halfHeight - 50, 100, 100, ""):
+            currentProcessor += 1
+    else:
+        display.blit(arrows[3], (1150, halfHeight - 50))
+
+    if currentProcessor != 1:
+        display.blit(arrows[0], (18, halfHeight - 50))
+        if button(18, halfHeight - 50, 100, 100, ""):
+            currentProcessor -= 1
+    else:
+        display.blit(arrows[2], (18, halfHeight - 50))
+
+    processorsClasses[currentProcessor - 1].set()
+
+    if button(x=1200, y=10, width=50, height=50,
+              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
+              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
+        screen = "Игра"
+
+    checkEscape("Игра")
+
+
+def checkEscape(where):
+    global escapePressed, screen
+    # Выход нажатием клавиши escape
+    if keys[pygame.K_ESCAPE]:
+        # Проверка на долговременное нажатие (если убрать - баги)
+        if not escapePressed:
+            escapePressed = True
+            pygame.time.delay(120)
+    else:
+        # Продолжение проверки на долговременное нажатие
+        if escapePressed:
+            screen = where
+            escapePressed = False
 
 
 def seeLaptops():
@@ -647,12 +699,15 @@ def play():
     elif button(x=130, y=230, width=270, height=50, massage="Новый процессор", color=(180, 180, 180), activeColor=0,
                 colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=125, hitBoxY=15, fontSize=29):
         screen = "Загрузка Процессора"
-    elif button(x=130, y=330, width=270, height=50, massage="Ноутбуки", color=(180, 180, 180), activeColor=0,
+    elif button(x=130, y=330, width=270, height=50, massage="Процессоры", color=(180, 180, 180), activeColor=0,
+                colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=90, hitBoxY=15, fontSize=29):
+        screen = "Загрузка просмотра процессоров"
+    elif button(x=130, y=430, width=270, height=50, massage="Ноутбуки", color=(180, 180, 180), activeColor=0,
                 colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=90, hitBoxY=15, fontSize=29):
         if len(laptops) > 0:
-            loadingSeeLaptops()
+
             screen = "Просмотр ноутбуков"
-    elif button(x=130, y=430, width=270, height=50, massage="Технологии", color=(180, 180, 180), activeColor=0,
+    elif button(x=130, y=530, width=270, height=50, massage="Технологии", color=(180, 180, 180), activeColor=0,
                 colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=95, hitBoxY=15, fontSize=29):
         loadingTech()
         screen = "Технологии"
@@ -698,6 +753,10 @@ def game():
             arrows = loadingBeforeProcessor()
         elif screen == "Процессор сделан":
             processorDone()
+        elif screen == "Загрузка просмотра процессоров":
+            arrows = loadingBeforeSeeProc()
+        elif screen == "Просмотр процессоров":
+            seeProcessors(arrows)
         elif screen == "Просмотр ноутбуков":
             seeLaptops()
         elif screen == "Технологии":

@@ -13,9 +13,11 @@ screenTech = 1
 
 escapePressed = False
 processors = []
+processorsClasses = []
 processor = None
 buttonPressed = False
 per = ""
 keyPressed = False
 needKey = ""
 point = ""
+currentProcessor = 1

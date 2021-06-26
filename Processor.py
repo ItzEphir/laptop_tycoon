@@ -7,16 +7,17 @@ pygame.init()
 
 
 class Processor:
-    def __init__(self, x, y, price, processorSettings, frequency=1.0):
+    def __init__(self, x, y, price, processorSettings, frequency=1.0, cores=1, flows=2, name="",
+                 flow_technology="Hyper Threading"):
         self.__x = x
         self.__y = y
         self.__price = price
         self.__processorSettings = processorSettings
-        self.__name = ""
+        self.__name = name
         self.__frequency = frequency
-        self.__cores = 1
-        self.__flows = 2
-        self.__flow_technology = "Hyper Threading"
+        self.__cores = cores
+        self.__flows = flows
+        self.__flow_technology = flow_technology
         self.__image = None
         self.__text = None
         self.__font_type = None
@@ -129,22 +130,3 @@ class Processor:
             return self.__flow_technology
         elif whatget == 'count':
             return self.__count
-
-    def __del__(self):
-        self.__x = None
-        self.__y = None
-        self.__price = None
-        self.__processorSettings = None
-        self.__name = None
-        self.__frequency = None
-        self.__cores = None
-        self.__flows = None
-        self.__flow_technology = None
-        self.__image = None
-        self.__text = None
-        self.__font_type = None
-        self.__text_width = None
-        self.__text_half_width = None
-        self.__text_color = None
-        self.__text_size = None
-        self.__count = None
