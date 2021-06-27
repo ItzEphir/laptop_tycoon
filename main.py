@@ -7,6 +7,7 @@ from Levels import *
 from PhotoEtit import *
 from Processor import *
 from key_text import *
+from deleteProcessorFile import *
 
 pygame.init()
 levels = Levels()
@@ -609,6 +610,15 @@ def checkEscape(where):
         if escapePressed:
             screen = where
             escapePressed = False
+
+
+# Илья, используй эту функцию для удаления файлов процессоров!
+def deleteProcessors():
+    global processor, processors, processorsClasses, currentProcessor
+    deleteProcessorsFiles(int(load("files/processors.txt")[0]))
+    processors = []
+    processorsClasses = []
+    processor = None
 
 
 def seeLaptops():
