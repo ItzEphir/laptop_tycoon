@@ -490,7 +490,7 @@ def processorSpec2(arrows):
 
 
 def processorDone():
-    global screen, point, processor
+    global screen, processor, per, needKey, keyPressed
 
     display.fill((0, 0, 194))
 
@@ -507,6 +507,10 @@ def processorDone():
     save("files/processors.txt", [str(processor.get("count"))])
 
     processor = None
+    per = ""
+    needKey = ""
+    keyPressed = False
+
     screen = "Игра"
     return
 
@@ -541,6 +545,8 @@ def loadingBeforeSeeProc():
         processorsClasses.append(Processor(WIDTH - 350, halfHeight - 500, int(processors[i][5]), count,
                                  float(processors[i][1]), int(processors[i][2]), int(processors[i][3]),
                                  str(processors[i][0]), str(processors[i][4])))
+        print(processors)
+        print(processorsClasses)
     allow_left_arrow = loadingImg("img/allow_left_arrow.png", 1, 1)
     allow_right_arrow = loadingImg("img/allow_right_arrow.png", 1, 1)
     cancel_left_arrow = loadingImg("img/cancel_left_arrow.png", 1, 1)
@@ -576,9 +582,18 @@ def seeProcessors(arrows):
     if button(x=1200, y=10, width=50, height=50,
               massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
               activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
-        screen = "Игра"
+        screen = "Процессоры просмотрены"
 
-    checkEscape("Игра")
+    checkEscape("Процессоры просмотрены")
+
+
+def processorsSeen():
+    global screen, processors, processorsClasses, currentProcessor
+    processors = []
+    processorsClasses = []
+    currentProcessor = 1
+
+    screen = "Игра"
 
 
 def checkEscape(where):
@@ -757,6 +772,8 @@ def game():
             arrows = loadingBeforeSeeProc()
         elif screen == "Просмотр процессоров":
             seeProcessors(arrows)
+        elif screen == "Процессоры просмотрены":
+            processorsSeen()
         elif screen == "Просмотр ноутбуков":
             seeLaptops()
         elif screen == "Технологии":
