@@ -8,9 +8,9 @@ halfWidth = WIDTH // 2
 halfHeight = WIDTH // 2
 
 f = open("files/Настройки.txt", "r")
-sohra_zagruzil = f.read()
-newsohra_zagruzil = sohra_zagruzil.split("/")
-fullScreen = newsohra_zagruzil[0]
+save_downloaded = f.read()
+new_save_downloaded = save_downloaded.split("/")
+fullScreen = new_save_downloaded[0]
 f.close()
 
 if fullScreen == "1":
@@ -23,23 +23,30 @@ pygame.display.set_caption("Гонка")
 clock = pygame.time.Clock()
 
 
-def button(x=100, y=100, width=150, height=50, massage="Кнопка", color=0, activeColor=0, colorTitle=(0, 0, 0), activeColorTitle=0, hitBoxX=50, hitBoxY=10, fontSize=20, font="Courier New", delay=120):
+def button(x=100, y=100, width=150, height=50, massage="Кнопка",
+           color=0, activeColor=0, colorTitle=(0, 0, 0), activeColorTitle=0,
+           hitBoxX=50, hitBoxY=10, fontSize=20, font="Courier New", delay=120, center=False):
     mouse = pygame.mouse.get_pos()
-    click = pygame.mouse.get_pressed()
+    click = pygame.mouse.get_pressed(5)
     if color != 0:
         pygame.draw.rect(display, color, (x, y, width, height))
-    print_text(massage, x + width / 2 - hitBoxX, y + (height // 2 - hitBoxY), colorTitle, fontSize, font)
+    print_text(massage, x + width / 2 - hitBoxX, y + (height // 2 - hitBoxY), colorTitle, fontSize, font, center)
     if x < mouse[0] < x + width and y < mouse[1] < y + height:
         if activeColor != 0:
             pygame.draw.rect(display, activeColor, (x, y, width, height))
         if activeColorTitle != 0:
-            print_text(massage, x + width / 2 - hitBoxX, y + (height // 2 - hitBoxY), activeColorTitle, fontSize, font)
+            print_text(massage, x + width / 2 - hitBoxX, y + (height // 2 - hitBoxY),
+                       activeColorTitle, fontSize, font, center)
         if click[0] == 1:
             pygame.time.delay(delay)
             return 1
 
 
-def print_text(message, x, y, font_color=(0, 0, 0), font_size=20, font="Courier New"):
+def print_text(message, x, y, font_color=(0, 0, 0), font_size=20, font="Courier New", center=False):
     font_type = pygame.font.SysFont(font, font_size)
     text = font_type.render(message, True, font_color)
-    display.blit(text, (x, y))
+    if center:
+        text_width = text.get_width() // 2
+        display.blit(text, (x - text_width, y))
+    else:
+        display.blit(text, (x, y))

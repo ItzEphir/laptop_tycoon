@@ -8,6 +8,7 @@ from PhotoEtit import *
 from Processor import *
 from key_text import *
 from deleteProcessorFile import *
+from checkMouse import *
 
 pygame.init()
 levels = Levels()
@@ -17,6 +18,10 @@ levels.refresh()
 # button(x=100, y=650, width=150, height=50,
 #        massage=f"Назад", color=0, activeColor=0, colorTitle=(10, 10, 10),
 #        activeColorTitle=0, hitBoxX=60, hitBoxY=15, fontSize=30, font="Courier New", delay=120)
+
+def checkCountMouse():
+    if not countMouse():
+        return False
 
 
 def write(what_write, file):
@@ -382,6 +387,14 @@ def showMark():
 
 
 # Дима здесь
+def processorSpecChoose():
+    global screen, escapePressed, processor, buttonPressed
+
+    display.fill((0, 0, 194))
+
+    print_text()
+
+
 def processorSpec():
     global screen, escapePressed, processor, buttonPressed
 
@@ -580,6 +593,14 @@ def seeProcessors(arrows):
 
     processorsClasses[currentProcessor - 1].set()
 
+    print_text("Частота: " + str(processorsClasses[currentProcessor - 1].get("frequency")),
+               halfWidth - 510, halfHeight - 400, (255, 255, 255), 20)
+    print_text("Кол-во ядер: " + str(processorsClasses[currentProcessor - 1].get("cores")),
+               halfWidth - 510, halfHeight - 350, (255, 255, 255), 20)
+    print_text("Кол-во потоков" + " (" + processorsClasses[currentProcessor - 1].get("flow technology") + "): " +
+               str(processorsClasses[currentProcessor - 1].get("flows")), halfWidth - 510, halfHeight - 300,
+               (255, 255, 255), 20)
+
     if button(x=1200, y=10, width=50, height=50,
               massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
               activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
@@ -752,6 +773,8 @@ def game():
     global game_end, display, keys
     game_end = False
     arrows = None
+    if not checkCountMouse():
+        return
     while not game_end:
         clock.tick(FPS)
         keys = pygame.key.get_pressed()
