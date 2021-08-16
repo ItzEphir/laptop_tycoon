@@ -8,7 +8,6 @@ from PhotoEtit import *
 from Processor import *
 from key_text import *
 from deleteProcessorFile import *
-from checkMouse import *
 
 pygame.init()
 levels = Levels()
@@ -387,16 +386,57 @@ def showMark():
 
 
 # Дима здесь
-def processorSpecChoose():
-    global screen, escapePressed, processor, buttonPressed
+def processorSpecChoose(arrows):
+    global screen
 
     display.fill((0, 0, 194))
 
-    print_text()
+    if button(x=halfWidth - 400, y=HEIGHT - halfHeight, width=350, height=50, massage=arrows[4]["серия"],
+              color=(255, 255, 255), activeColor=0, colorTitle=(0, 0, 0), activeColorTitle=0,
+              hitBoxX=0, hitBoxY=10, fontSize=20, font="Courier New", delay=120, center=True):
+        screen = "Серия процессоров хар"
+    elif button(x=halfWidth + 100, y=HEIGHT - halfHeight, width=300, height=50, massage=arrows[4]["один"],
+                color=(255, 255, 255), activeColor=0, colorTitle=(0, 0, 0), activeColorTitle=0,
+                hitBoxX=0, hitBoxY=10, fontSize=20, font="Courier New", delay=120, center=True):
+        screen = "Процессор хар"
+
+    checkEscape("Меню")
+
+
+def processorSeriaSpec(arrows):
+    global screen, processors, processorsCounter
+
+    display.fill((0, 0, 194))
+
+    print_text("Введите необходимое количество процессоров в серии:", WIDTH // 2 + 30, HEIGHT - halfHeight, (255, 255, 255),
+               20, "Courier New", True)
+
+    print_text(str(processorsCounter), WIDTH // 2, HEIGHT - halfHeight + 110, (255, 255, 255), 20, "Courier New", True)
+
+    if processorsCounter != 0:
+        display.blit(arrows[0], (WIDTH // 2 - 100, HEIGHT - halfHeight + 100))
+        if button(WIDTH // 2 - 100, HEIGHT - halfHeight + 100, 100, 100, ""):
+            processorsCounter -= 1
+    else:
+        display.blit(arrows[2], (WIDTH // 2 - 100, HEIGHT - halfHeight + 100))
+
+    if processorsCounter != 10:
+        display.blit(arrows[1], (WIDTH // 2 + 45, HEIGHT - halfHeight + 100))
+        if button(WIDTH // 2 + 45, HEIGHT - halfHeight + 100, 100, 100, ""):
+            processorsCounter += 1
+    else:
+        display.blit(arrows[3], (WIDTH // 2 + 45, HEIGHT - halfHeight + 100))
+
+    if processorsCounter > 1:
+        if button(WIDTH // 2 - 50, HEIGHT // 2, 100, 50, "Далее", (255, 255, 255), 0, (0, 0, 0),
+                  0, 30, 10, 20, "Courier New", True):
+            pass
+
+    checkEscape("Загрузка Процессора")
 
 
 def processorSpec():
-    global screen, escapePressed, processor, buttonPressed
+    global screen, processor, buttonPressed
 
     display.fill((0, 0, 194))
 
@@ -536,6 +576,10 @@ def loadingBeforeProcessor():
     processorSettings = int(f.read())
     f.close()
 
+    texts_in_processors = {"серия": "Выпустить серию процессоров",
+                           "один": "Выпустить процессор"
+                           }
+
     processor = Processor(WIDTH - 350, halfHeight - 500, 100,
                           processorSettings)
 
@@ -544,8 +588,8 @@ def loadingBeforeProcessor():
     cancel_left_arrow = loadingImg("img/cancel_left_arrow.png", 1, 1)
     cancel_right_arrow = loadingImg("img/cancel_right_arrow.png", 1, 1)
 
-    screen = "Процессор хар"
-    return allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow
+    screen = "Процессор выбор"
+    return allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow, texts_in_processors
 
 
 def loadingBeforeSeeProc():
@@ -773,8 +817,6 @@ def game():
     global game_end, display, keys
     game_end = False
     arrows = None
-    if not checkCountMouse():
-        return
     while not game_end:
         clock.tick(FPS)
         keys = pygame.key.get_pressed()
@@ -793,12 +835,16 @@ def game():
             play()
         elif screen == "Ноутбук хар":
             laptopSpecGeneral()
+        elif screen == "Серия процессоров хар":
+            processorSeriaSpec(arrows)
         elif screen == "Процессор хар":
             processorSpec()
         elif screen == "Процессор хар2":
             processorSpec2(arrows)
         elif screen == "Загрузка Процессора":
             arrows = loadingBeforeProcessor()
+        elif screen == "Процессор выбор":
+            processorSpecChoose(arrows)
         elif screen == "Процессор сделан":
             processorDone()
         elif screen == "Загрузка просмотра процессоров":

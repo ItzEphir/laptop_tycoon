@@ -15,6 +15,7 @@ escapePressed = False
 processors = []
 processorsClasses = []
 processor = None
+processorsCounter = 2
 buttonPressed = False
 per = ""
 keyPressed = False
