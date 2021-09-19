@@ -2,7 +2,7 @@ from Peremen import per, keyPressed, needKey
 import pygame
 
 
-def keyboard_to_text(keys, processor):
+def keyboard_to_text(keys):
     global per, keyPressed, needKey
     capslock = pygame.key.get_mods() & pygame.KMOD_CAPS
     if keys[pygame.K_LSHIFT] or capslock:
@@ -166,7 +166,7 @@ def keyboard_to_text(keys, processor):
                     per = "".join(per)
                 else:
                     per += needKey
-                return per, processor.get("name")
+                return per
     elif keys[pygame.K_q]:
         if not keyPressed:
             keyPressed = True
@@ -327,6 +327,6 @@ def keyboard_to_text(keys, processor):
                 per = "".join(per)
             else:
                 per += needKey
-            return per, processor.get("name")
+            return per
 
-    return per, processor
+    return per

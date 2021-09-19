@@ -1,18 +1,25 @@
 import pygame
-from random import randint
-from Peremen import *
-from Engine import *
-from Laptop import *
 from Levels import *
-from PhotoEtit import *
-from Processor import *
-from key_text import *
-from deleteProcessorFile import *
-from CreateFolder import *
+if __name__ == '__main__':
+    from random import randint
+    from Peremen import *
+    from Engine import *
+    from Laptop import *
+    from PhotoEtit import *
+    from files.processor_files.processor_py_files.Processor import *
+    from key_text import *
+    from files.processor_files.processor_py_files.deleteProcessorFile import *
+    import files.processor_files.processor_py_files.processor_seria_draw as processor_seria_draw
+    import files.processor_files.processor_py_files.processor_one_draw as processor_one_draw
+    import files.processor_files.processor_py_files.ProcessorDone as ProcessorDone
+    import files.processor_files.processor_py_files.loading as loadingProcessors
+    import files.processor_files.processor_py_files.processor_see as processor_see
+    from files.processor_files.processor_py_files.deleteProcessorFile import *
 
 pygame.init()
 levels = Levels()
 levels.refresh()
+
 
 # Шаблон
 # button(x=100, y=650, width=150, height=50,
@@ -403,35 +410,11 @@ def processorSpecChoose(arrows):
 def processorSeriaSpec(arrows):
     global screen, processors, processorsCounter
 
-    display.fill((0, 0, 194))
+    got = processor_seria_draw.spec1(arrows, processorsCounter, processors)
 
-    print_text("Введите необходимое количество процессоров в серии:", WIDTH // 2 + 30, HEIGHT - halfHeight, (255, 255, 255),
-               20, "Courier New", True)
-
-    print_text(str(processorsCounter), WIDTH // 2, HEIGHT - halfHeight + 110, (255, 255, 255), 20, "Courier New", True)
-
-    if processorsCounter != 0:
-        display.blit(arrows[0], (WIDTH // 2 - 100, HEIGHT - halfHeight + 100))
-        if button(WIDTH // 2 - 100, HEIGHT - halfHeight + 100, 100, 100, ""):
-            processorsCounter -= 1
-    else:
-        display.blit(arrows[2], (WIDTH // 2 - 100, HEIGHT - halfHeight + 100))
-
-    if processorsCounter != 10:
-        display.blit(arrows[1], (WIDTH // 2 + 45, HEIGHT - halfHeight + 100))
-        if button(WIDTH // 2 + 45, HEIGHT - halfHeight + 100, 100, 100, ""):
-            processorsCounter += 1
-    else:
-        display.blit(arrows[3], (WIDTH // 2 + 45, HEIGHT - halfHeight + 100))
-
-    if processorsCounter > 1:
-        if button(WIDTH // 2 - 50, HEIGHT // 2, 100, 50, "Далее", (255, 255, 255), 0, (0, 0, 0),
-                  0, 30, 10, 20, "Courier New", True):
-            screen = "Загрузка серия процессоров хар2"
-            for i in range(processorsCounter):
-                processors.append("lol")
-            pygame.time.delay(120)
-            return
+    screen = got[0]
+    processors = got[1]
+    processorsCounter = got[2]
 
     checkEscape("Загрузка Процессора")
 
@@ -439,239 +422,47 @@ def processorSeriaSpec(arrows):
 def processorSeriaSpec2(arrows):
     global screen, processorsCounter
 
-    display.fill((0, 0, 194))
+    got = processor_seria_draw.spec2(arrows, processorsCounter)
 
-    print(processors)
+    print(got[0])
 
-    for i in range(processorsCounter):
-        if i < 4:
-            if button(WIDTH // 2 - 100, 100 + i * 150, 100, 50, arrows[5][i]):
-                screen = "Серия процессоров хар3"
-                return i
-        elif i < 8:
-            if button(WIDTH // 2 + 100, 100 + (i - 4) * 150, 100, 50, arrows[5][i]):
-                screen = "Серия процессоров хар3"
-                return i
-        else:
-            if button(WIDTH // 2 + 300, 100 + (i - 8) * 150, 100, 50, arrows[5][i]):
-                screen = "Серия процессоров хар3"
-                return i
-
-    if button(halfWidth - 500, halfHeight - 300, 200, 50, "Завершить", (255, 255, 255), (150, 150, 150),
-              (0, 0, 0), (255, 255, 255), 62, 10, 25, "Courier New", True):
-        screen = "Завершить серию процессоров"
-
-    return None
+    screen = got[1]
+    return got[0]
 
 
 def processorSeriaSpec3(index):
-    global screen, processors, buttonPressed, processorsCounter
+    global screen, processors, processorsCounter, buttonPressed
 
-    display.fill((0, 0, 194))
+    got = processor_seria_draw.spec3(processors, index, processorsCounter, buttonPressed, keys)
 
-    print_text("Название:", halfWidth - 80, halfHeight - 500, (255, 255, 255))
-
-    if button(halfWidth - 200, halfHeight - 400, 300, 50, "____________", 0, 0, (255, 255, 255)):
-        buttonPressed = True
-    elif button(0, 0, WIDTH, halfHeight - 400, "") or button(0, 0, halfWidth - 200, HEIGHT, "") or \
-            button(0, halfHeight - 350, WIDTH, HEIGHT - (halfHeight - 350), "") or \
-            button(halfWidth + 100, 0, WIDTH - (halfHeight + 100), HEIGHT, ""):
-        buttonPressed = False
-
-    if buttonPressed:
-        get = keyboard_to_text(keys, processors[index])
-        processors[index].change_name(get[1])
-        processors[index].change_name(get[0])
-        exition = processors[index].get("name") + "|"
-    else:
-        exition = processors[index].get("name")
-
-    print_text(exition, halfWidth - 100, halfHeight - 400, (255, 255, 255))
-
-    if processors[index].get("name") != "":
-        if button(halfWidth - 77, halfHeight - 300, 100, 50, "Далее", (255, 255, 255), (150, 150, 150),
-                  (0, 0, 0), (255, 255, 255), 40, 10, 25, "Courier New"):
-            screen = "Серия процессоров хар4"
-    else:
-        button(halfWidth - 77, halfHeight - 300, 100, 50, "Далее", (150, 150, 150), 0,
-               (255, 255, 255), 0, 40, 10, 25, "Courier New")
-
-    if button(x=1200, y=10, width=50, height=50,
-              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
-              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
-        processors = []
-        processorsCounter = 0
-
-        screen = "Игра"
+    screen = got[0]
+    processors = got[1]
+    processorsCounter = got[2]
+    buttonPressed = got[3]
+    index = got[4]
 
     checkEscape("Игра")
+    return index
 
 
 def processorSeriaSpec4(index, arrows):
-    global screen, processors
+    global screen
 
-    display.fill((0, 0, 194))
-
-    processors[index].set()
-
-    print_text("Частота", halfWidth - 510, halfHeight - 150, (255, 255, 255), 14)
-    print_text(str(processors[index].get("frequency")), halfWidth - 500, halfHeight - 85, (255, 255, 255))
-    if processors[index].get("frequency") != 5.0:
-        display.blit(arrows[1], (halfWidth - 450, halfHeight - 100))
-        if button(halfWidth - 450, halfHeight - 100, 50, 50, ""):
-            processors[index].frequency_plus()
-    else:
-        display.blit(arrows[3], (halfWidth - 450, halfHeight - 100))
-    if processors[index].get("frequency") != 1.0:
-        display.blit(arrows[0], (halfWidth - 560, halfHeight - 100))
-        if button(halfWidth - 560, halfHeight - 100, 50, 50, ""):
-            processors[index].frequency_minus()
-    else:
-        display.blit(arrows[2], (halfWidth - 560, halfHeight - 100))
-
-    print_text("Кол-во ядер", halfWidth - 510, halfHeight - 300, (255, 255, 255), 14)
-    print_text(str(processors[index].get("cores")), halfWidth - 485, halfHeight - 235, (255, 255, 255))
-    if processors[index].get("cores") != 16:
-        display.blit(arrows[1], (halfWidth - 450, halfHeight - 250))
-        if button(halfWidth - 450, halfHeight - 250, 50, 50, ""):
-            processors[index].cores_plus()
-    else:
-        display.blit(arrows[3], (halfWidth - 450, halfHeight - 250))
-    if processors[index].get("cores") != 1:
-        display.blit(arrows[0], (halfWidth - 560, halfHeight - 250))
-        if button(halfWidth - 560, halfHeight - 250, 50, 50, ""):
-            processors[index].cores_minus()
-    else:
-        display.blit(arrows[2], (halfWidth - 560, halfHeight - 250))
-
-    print_text("Кол-во потоков" + " (" + processors[index].get("flow technology") + ")", halfWidth - 580, halfHeight - 450,
-               (255, 255, 255), 14)
-    print_text(str(processors[index].get("flows")), halfWidth - 485, halfHeight - 385, (255, 255, 255))
-    if processors[index].get("flows") != 48 and processors[index].get("flow technology") == "Hyper Threading" or \
-            processors[index].get("flows") == 1:
-        display.blit(arrows[1], (halfWidth - 450, halfHeight - 400))
-        if button(halfWidth - 450, halfHeight - 400, 50, 50, ""):
-            processors[index].flows_plus()
-    else:
-        display.blit(arrows[3], (halfWidth - 450, halfHeight - 400))
-    if (processors[index].get("flows") != 2 and processors[index].get("flow technology") == "Multi Threading") or \
-            processors[index].get("cores") == 1 and processors[index].get("flows") != 1:
-        display.blit(arrows[0], (halfWidth - 560, halfHeight - 400))
-        if button(halfWidth - 560, halfHeight - 400, 50, 50, ""):
-            processors[index].flows_minus()
-    else:
-        display.blit(arrows[2], (halfWidth - 560, halfHeight - 400))
-
-    if button(x=1150, y=600, width=100, height=50,
-              massage="=>", color=0, activeColor=0, colorTitle=(10, 10 ,10),
-              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
-        screen = "Серия процессоров хар2"
+    screen = processor_seria_draw.spec4(arrows, index, processors)
 
 
 def processorSpec():
-    global screen, processor, buttonPressed
+    global screen
 
-    display.fill((0, 0, 194))
-
-    print_text("Название:", halfWidth - 80, halfHeight - 500, (255, 255, 255))
-
-    if button(halfWidth - 200, halfHeight - 400, 300, 50, "____________", 0, 0, (255, 255, 255)):
-        buttonPressed = True
-    elif button(0, 0, WIDTH, halfHeight - 400, "") or button(0, 0, halfWidth - 200, HEIGHT, "") or \
-            button(0, halfHeight - 350, WIDTH, HEIGHT - (halfHeight - 350), "") or \
-            button(halfWidth + 100, 0, WIDTH - (halfHeight + 100), HEIGHT, ""):
-        buttonPressed = False
-
-    if buttonPressed:
-        get = keyboard_to_text(keys, processor)
-        processor.change_name(get[1])
-        processor.change_name(get[0])
-        exition = processor.get("name") + "|"
-    else:
-        exition = processor.get("name")
-
-    print_text(exition, halfWidth - 100, halfHeight - 400, (255, 255, 255))
-
-    if processor.get("name") != "":
-        if button(halfWidth - 77, halfHeight - 300, 100, 50, "Далее", (255, 255, 255), (150, 150, 150),
-                  (0, 0, 0), (255, 255, 255), 40, 10, 25, "Courier New"):
-            screen = "Процессор хар2"
-    else:
-        button(halfWidth - 77, halfHeight - 300, 100, 50, "Далее", (150, 150, 150), 0,
-               (255, 255, 255), 0, 40, 10, 25, "Courier New")
-
-    if button(x=1200, y=10, width=50, height=50,
-              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
-              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
-        screen = "Игра"
+    screen = processor_one_draw.spec1(processor, keys)
 
     checkEscape("Игра")
 
 
 def processorSpec2(arrows):
-    global screen, escapePressed, processor
+    global screen
 
-    # Фон
-    display.fill((0, 0, 194))
-
-    processor.set()
-
-    print_text("Частота", halfWidth - 510, halfHeight - 150, (255, 255, 255), 14)
-    print_text(str(processor.get("frequency")), halfWidth - 500, halfHeight - 85, (255, 255, 255))
-    if processor.get("frequency") != 5.0:
-        display.blit(arrows[1], (halfWidth - 450, halfHeight - 100))
-        if button(halfWidth - 450, halfHeight - 100, 50, 50, ""):
-            processor.frequency_plus()
-    else:
-        display.blit(arrows[3], (halfWidth - 450, halfHeight - 100))
-    if processor.get("frequency") != 1.0:
-        display.blit(arrows[0], (halfWidth - 560, halfHeight - 100))
-        if button(halfWidth - 560, halfHeight - 100, 50, 50, ""):
-            processor.frequency_minus()
-    else:
-        display.blit(arrows[2], (halfWidth - 560, halfHeight - 100))
-
-    print_text("Кол-во ядер", halfWidth - 510, halfHeight - 300, (255, 255, 255), 14)
-    print_text(str(processor.get("cores")), halfWidth - 485, halfHeight - 235, (255, 255, 255))
-    if processor.get("cores") != 16:
-        display.blit(arrows[1], (halfWidth - 450, halfHeight - 250))
-        if button(halfWidth - 450, halfHeight - 250, 50, 50, ""):
-            processor.cores_plus()
-    else:
-        display.blit(arrows[3], (halfWidth - 450, halfHeight - 250))
-    if processor.get("cores") != 1:
-        display.blit(arrows[0], (halfWidth - 560, halfHeight - 250))
-        if button(halfWidth - 560, halfHeight - 250, 50, 50, ""):
-            processor.cores_minus()
-    else:
-        display.blit(arrows[2], (halfWidth - 560, halfHeight - 250))
-
-    print_text("Кол-во потоков" + " (" + processor.get("flow technology") + ")", halfWidth - 580, halfHeight - 450, (255, 255, 255), 14)
-    print_text(str(processor.get("flows")), halfWidth - 485, halfHeight - 385, (255, 255, 255))
-    if processor.get("flows") != 48 and processor.get("flow technology") == "Hyper Threading" or\
-            processor.get("flows") == 1:
-        display.blit(arrows[1], (halfWidth - 450, halfHeight - 400))
-        if button(halfWidth - 450, halfHeight - 400, 50, 50, ""):
-            processor.flows_plus()
-    else:
-        display.blit(arrows[3], (halfWidth - 450, halfHeight - 400))
-    if (processor.get("flows") != 2 and processor.get("flow technology") == "Multi Threading") or\
-            processor.get("cores") == 1 and processor.get("flows") != 1:
-        display.blit(arrows[0], (halfWidth - 560, halfHeight - 400))
-        if button(halfWidth - 560, halfHeight - 400, 50, 50, ""):
-            processor.flows_minus()
-    else:
-        display.blit(arrows[2], (halfWidth - 560, halfHeight - 400))
-
-    if button(x=1150, y=600, width=100, height=50,
-              massage="=>", color=0, activeColor=0, colorTitle=(10, 10 ,10),
-              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
-        screen = "Процессор сделан"
-
-    if button(x=1200, y=10, width=50, height=50,
-              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
-              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
-        screen = "Игра"
+    screen = processor_one_draw.spec2(arrows, processor)
 
     checkEscape("Процессор хар")
 
@@ -679,156 +470,61 @@ def processorSpec2(arrows):
 def processorDone():
     global screen, processor, per
 
-    display.fill((0, 0, 194))
+    got = ProcessorDone.one(processor, per, processorsCounter, processors)
 
-    processor.set()
-
-    print_text("Загрузка", halfWidth - 100, halfHeight - 100, (255, 255, 255))
-    create(f"files/createdProcessors/processor{processor.get('count') + 1}")
-    processor.count_plus(1)
-
-    write(str(f'{processor.get("name")}/{str(processor.get("frequency"))}/\
-{str(processor.get("cores"))}/{str(processor.get("flows"))}/\
-{processor.get("flow technology")}/{str(processor.get("price"))}'), f'files/createdProcessors/processor{processor.get("count")}')
-
-    save("files/processors.txt", [str(processor.get("count"))])
-
-    processor = None
-    per = ""
-
-    screen = "Игра"
-    return
+    screen = got[0]
+    processor = [1]
+    per = got[2]
 
 
 def processorSeriaDone():
-    global screen, processors, processorCounter, per
+    global screen, processors, processorsCounter, per
 
-    display.fill((0, 0, 194))
+    got = ProcessorDone.seria(processors, processorsCounter, per)
 
-    f = open("files/processorSeries.txt")
-    counts = int(f.read())
-    f.close()
-
-    createFolder(f"seria{counts + 1}")
-    for i in range(processorsCounter):
-        create(f"files/createdSeriesProcessors/seria{counts + 1}/processor{i + 1}.txt")
-    create(f"files/createdSeriesProcessors/seria{counts + 1}/processors.txt")
-
-    write(str(processorsCounter), f"files/createdSeriesProcessors/seria{counts +1}/processors.txt")
-
-    for i in range(len(processors)):
-        write(str(f'{processors[i].get("name")}/{str(processors[i].get("frequency"))}/\
-{str(processors[i].get("cores"))}/{str(processors[i].get("flows"))}/\
-{processors[i].get("flow technology")}/{str(processors[i].get("price"))}'),
-              f'files/createdSeriesProcessors/seria{counts + 1}/processor{i + 1}.txt')
-
-    write(str(counts + 1), "files/processorSeries.txt")
-
-    processors = []
-    processorCounter = 0
-    per = ""
-
-    screen = "Игра"
-    return
+    screen = got[0]
+    processors = got[1]
+    processorsCounter = got[2]
+    per = got[3]
 
 
 def loadingBeforeProcessor():
     global screen, processor
 
-    f = open("files/processors.txt", "r")
-    processorSettings = int(f.read())
-    f.close()
+    got = loadingProcessors.beforeOne(processor)
 
-    texts_in_processors = {"серия": "Выпустить серию процессоров",
-                           "один": "Выпустить процессор"
-                           }
+    screen = got[0]
+    arrows = got[1]
+    processor = got[2]
 
-    processorNums = ["Первый", "Второй", "Третий", "Четвертый", "Пятый",
-                     "Шестой", "Седьмой", "Восьмой", "Девятый", "Десятый"]
-
-    processor = Processor(WIDTH - 350, halfHeight - 500, 100,
-                          processorSettings)
-
-    allow_left_arrow = loadingImg("img/allow_left_arrow.png", 1, 1)
-    allow_right_arrow = loadingImg("img/allow_right_arrow.png", 1, 1)
-    cancel_left_arrow = loadingImg("img/cancel_left_arrow.png", 1, 1)
-    cancel_right_arrow = loadingImg("img/cancel_right_arrow.png", 1, 1)
-
-    screen = "Процессор выбор"
-    return allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow,\
-           texts_in_processors, processorNums
+    return arrows
 
 
 def loadingBeforeSeria2():
     global screen, processors
 
-    f = open("files/processors.txt", "r")
-    processorSettings = int(f.read())
-    f.close()
-
-    for i in range(len(processors)):
-        processors[i] = Processor(WIDTH - 350, halfHeight - 500, 100, processorSettings)
+    processors = loadingProcessors.beforeSeria2(processors)
 
     screen = "Серия процессоров хар2"
 
 
 def loadingBeforeSeeProc():
     global screen, processors, processorsClasses
-    count = int(load("files/processors.txt")[0])
-    if count > 0:
-        for i in range(count):
-            processors.append(load(f"files/createdProcessors/processor{i + 1}"))
 
-    for i in range(len(processors)):
-        processorsClasses.append(Processor(WIDTH - 350, halfHeight - 500, int(processors[i][5]), count,
-                                 float(processors[i][1]), int(processors[i][2]), int(processors[i][3]),
-                                 str(processors[i][0]), str(processors[i][4])))
-        print(processors)
-        print(processorsClasses)
-    allow_left_arrow = loadingImg("img/allow_left_arrow.png", 1, 1)
-    allow_right_arrow = loadingImg("img/allow_right_arrow.png", 1, 1)
-    cancel_left_arrow = loadingImg("img/cancel_left_arrow.png", 1, 1)
-    cancel_right_arrow = loadingImg("img/cancel_right_arrow.png", 1, 1)
+    got = loadingProcessors.beforeSeeProc(processors, processorsClasses)
 
-    if len(processors) > 0:
-        screen = "Просмотр процессоров"
-    else:
-        screen = "Игра"
-    return allow_left_arrow, allow_right_arrow, cancel_left_arrow, cancel_right_arrow
+    screen = got[0]
+
+    return got[1], got[2], got[3], got[4]
 
 
 def seeProcessors(arrows):
     global screen, currentProcessor
-    display.fill((0, 0, 194))
 
-    if currentProcessor != len(processorsClasses):
-        display.blit(arrows[1], (1150, halfHeight - 50))
-        if button(1150, halfHeight - 50, 100, 100, ""):
-            currentProcessor += 1
-    else:
-        display.blit(arrows[3], (1150, halfHeight - 50))
+    got = processor_see.see(currentProcessor, processorsClasses, arrows)
 
-    if currentProcessor != 1:
-        display.blit(arrows[0], (18, halfHeight - 50))
-        if button(18, halfHeight - 50, 100, 100, ""):
-            currentProcessor -= 1
-    else:
-        display.blit(arrows[2], (18, halfHeight - 50))
-
-    processorsClasses[currentProcessor - 1].set()
-
-    print_text("Частота: " + str(processorsClasses[currentProcessor - 1].get("frequency")),
-               halfWidth - 510, halfHeight - 400, (255, 255, 255), 20)
-    print_text("Кол-во ядер: " + str(processorsClasses[currentProcessor - 1].get("cores")),
-               halfWidth - 510, halfHeight - 350, (255, 255, 255), 20)
-    print_text("Кол-во потоков" + " (" + processorsClasses[currentProcessor - 1].get("flow technology") + "): " +
-               str(processorsClasses[currentProcessor - 1].get("flows")), halfWidth - 510, halfHeight - 300,
-               (255, 255, 255), 20)
-
-    if button(x=1200, y=10, width=50, height=50,
-              massage=f"X", color=0, activeColor=0, colorTitle=(10, 10, 10),
-              activeColorTitle=0, hitBoxX=10, hitBoxY=20, fontSize=40, font="Courier New", delay=120):
-        screen = "Процессоры просмотрены"
+    screen = got[0]
+    currentProcessor = got[1]
 
     checkEscape("Процессоры просмотрены")
 
@@ -860,7 +556,8 @@ def checkEscape(where):
 # Илья, используй эту функцию для удаления файлов процессоров!
 def deleteProcessors():
     global processor, processors, processorsClasses, currentProcessor
-    deleteProcessorsFiles(int(load("files/processors.txt")[0]), int(load("files/processorSeries.txt")))
+    deleteProcessorsFiles(int(load("files/processor_files/processor_txt_files/created/createdProcessors/processors.txt")[0]),
+                          int(load("files/processor_files/processor_txt_files/created/createdSeriesProcessors/processorSeries.txt")[0]))
     currentProcessor = 1
     processors = []
     processorsClasses = []
@@ -903,7 +600,8 @@ def seeLaptops():
            massage=f"Матрица: {thisLaptop.screenTech}", color=0, activeColor=0, colorTitle=(10, 10, 10),
            activeColorTitle=0, hitBoxX=55, hitBoxY=15, fontSize=30, font="Courier New", delay=120)
     button(x=40, y=150, width=150, height=50,
-           massage=f"Разрешение: {thisLaptop.resolutionX} X {thisLaptop.resolutionY}", color=0, activeColor=0, colorTitle=(10, 10, 10),
+           massage=f"Разрешение: {thisLaptop.resolutionX} X {thisLaptop.resolutionY}", color=0, activeColor=0,
+           colorTitle=(10, 10, 10),
            activeColorTitle=0, hitBoxX=55, hitBoxY=15, fontSize=30, font="Courier New", delay=120)
     button(x=40, y=210, width=150, height=50,
            massage=f"Оценка: {thisLaptop.mark}", color=0, activeColor=0, colorTitle=(10, 10, 10),
@@ -976,7 +674,6 @@ def play():
     elif button(x=130, y=430, width=270, height=50, massage="Ноутбуки", color=(180, 180, 180), activeColor=0,
                 colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=90, hitBoxY=15, fontSize=29):
         if len(laptops) > 0:
-
             screen = "Просмотр ноутбуков"
     elif button(x=130, y=530, width=270, height=50, massage="Технологии", color=(180, 180, 180), activeColor=0,
                 colorTitle=(10, 10, 10), activeColorTitle=0, hitBoxX=95, hitBoxY=15, fontSize=29):
@@ -1024,7 +721,7 @@ def game():
         elif screen == "Серия процессоров хар2":
             index = processorSeriaSpec2(arrows)
         elif screen == "Серия процессоров хар3":
-            processorSeriaSpec3(index)
+            index = processorSeriaSpec3(index)
         elif screen == "Серия процессоров хар4":
             processorSeriaSpec4(index, arrows)
         elif screen == "Процессор хар":
@@ -1055,4 +752,5 @@ def game():
         pygame.display.update()
 
 
-game()
+if __name__ == '__main__':
+    game()
